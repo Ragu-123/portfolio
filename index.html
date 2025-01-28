@@ -1,26 +1,833 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    h1 {
-      color: #333;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragunath R - AI Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00D1FF;
+            --secondary: #7700FF;
+            --background: #0A0A0A;
+            --card-bg: #141414;
+            --text: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --border: #2A2A2A;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Apple-style Loader */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.1s;
+        }
+
+        .apple-loader {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .container {
+            max-width: 1440px;
+            width: 95%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            opacity: 0;
+            animation: fadeIn 0.5s 1s forwards; /* Changed from 3s to 1s */
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin: 4rem 0;
+            padding: 2rem 0;
+            display: none; /* Hide the duplicate header in main content */
+        }
+
+        .name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-bar {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Content Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border-color: var(--primary);
+            background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+                        var(--gradient) border-box;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Timeline Elements */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin: 2rem 0;
+            border-left: 2px solid var(--border);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background: var(--gradient);
+            border: none;
+            border-radius: 50%;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 1rem;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add these new styles */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-category li:before {
+            display: none;
+        }
+
+        .skill-category li i {
+            margin-right: 10px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            width: 20px;
+            text-align: center;
+        }
+
+        .skill-category h3 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .github-link {
+            color: var(--text);
+            font-size: 1.2rem;
+            transition: color 0.2s ease;
+        }
+
+        .github-link:hover {
+            color: var(--primary);
+        }
+
+        /* Add these new navigation styles */
+        .nav-container {
+            position: sticky;
+            top: 0;
+            background: rgba(20, 20, 20, 0.8);
+            padding: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            z-index: 100;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: var(--text);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--gradient);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 0.5rem;
+            }
+            .nav-item {
+                padding: 0.3rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .timeline-item {
+            border-left-color: var(--border);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 2rem 0;
+        }
+
+        /* Additional styles for better readability */
+        p, li {
+            color: var(--text-secondary);
+        }
+
+        h2, h3 {
+            color: var(--text);
+        }
+
+        em {
+            color: var(--primary);
+            font-style: normal;
+        }
+
+        .initial-view {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .initial-view .contact-bar {
+            margin: 1rem 0;
+        }
+
+        .initial-view .name {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--text);
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .scroll-text {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .content-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .main-content {
+            background: var(--background);
+            position: relative;
+            z-index: 2;
+            padding-top: 2rem;
+            min-height: 100vh;
+        }
+    </style>
 </head>
 <body>
-  <h1>Hello!</h1>
+    <!-- Apple-style Loader -->
+    <div class="loader">
+        <div class="apple-loader"></div>
+    </div>
+
+    <div class="container">
+        <div class="initial-view">
+            <h1 class="name">Ragunath R</h1>
+            <div class="contact-bar">
+                <a href="tel:7825078508" class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    +91 7825078508
+                </a>
+                <a href="mailto:ragunathravi73@gmail.com" class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    ragunathravi73@gmail.com
+                </a>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Chennai, India
+                </div>
+            </div>
+            <div class="contact-bar">
+                <a href="www.linkedin.com/in/ragunath-r-a2a580247" class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/Ragu-123" class="contact-item">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="https://drive.google.com/file/d/1ZmJ5mlok_NsqE5Y-RRTvaS3WOA72u8B4/view" class="contact-item">
+                    <i class="fas fa-file-pdf"></i>
+                    Resume
+                </a>
+            </div>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down"></i>
+                <div class="scroll-text">Scroll to explore</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Remove duplicate header section -->
+            
+            <!-- Navigation Menu -->
+            <nav class="nav-container">
+                <div class="nav-menu">
+                    <a href="#about" class="nav-item">About</a>
+                    <a href="#experience" class="nav-item">Experience</a>
+                    <a href="#education" class="nav-item">Education</a>
+                    <a href="#projects" class="nav-item">Projects</a>
+                    <a href="#skills" class="nav-item">Skills</a>
+                    <a href="#achievements" class="nav-item">Achievements</a>
+                </div>
+            </nav>
+
+            <!-- About Section (Combines Objective and Basic Info) -->
+            <section id="about" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h2>Objective</h2>
+                </div>
+                <p>Aspiring AI Engineer and recent graduate with a strong passion for artificial intelligence, machine learning, natural language processing, and computer vision. As a fresher, I am eager to contribute to industrial applications of AI, explore innovative solutions in NLP and CV, and gain hands-on experience through challenging projects while driving impactful advancements in these fields.
+                </p>
+            </section>
+
+            <!-- Experience Section (Combines Experience and Research) -->
+            <section id="experience" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h2>Experience & Research</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>Retech Technologies</h3>
+                    <p>AI Engineer Intern • June 2024 - July 2024</p>
+                    <ul class="experience-list">
+                        <li>Built facial recognition system with Vision Transformer (96% accuracy)</li>
+                        <li>Enhanced model performance with data augmentation techniques</li>
+                    </ul>
+                </div>
+                <div class="section-divider"></div>
+                <div class="timeline-item">
+                    <h3>SignLinformer: From Text to Gesture Translation</h3>
+                    <p>2024</p>
+                    <p>Research is currently in progress to explore and develop this study.</p>
+                </div>
+            </section>
+
+            <!-- Education Section (Combines Education and Certifications) -->
+            <section id="education" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2>Education & Certifications</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>Saveetha Engineering College</h3>
+                    <p>B.Tech Artificial Intelligence and Machine Learning • May 2022 - May 2026</p>
+                    <p>GPA: 8.00/10.00</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Kalaimagal Kalalaya Metric Higher Secondary School</h3>
+                    <p>Pre-University Education • May 2022</p>
+                    <p>Grade: 86.16%</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Kalaimagal Kalalaya Metric Higher Secondary School</h3>
+                    <p>Secondary Education • May 2020</p>
+                    <p>Grade: 98.8%</p>
+                </div>
+                <div class="section-divider"></div>
+                <div class="timeline-item">
+                    <h3>Machine Translation</h3>
+                    <p>Coursera • January 2025</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Introduction to Computer Vision</h3>
+                    <p>Coursera • January 2025</p>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h2>Projects</h2>
+                </div>
+                <div class="timeline-item">
+                    <div class="project-header">
+                        <h3>Space Debris Tracking</h3>
+                        <a href="https://github.com/Ragu-123/space-debris-tracking-and-path-prediction.git" class="github-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <p>April 2024</p>
+                    <p><em>Tools: Python, YOLOv5, PyTorch, OpenCV, Kalman Filter</em></p>
+                    <ul>
+                        <li>Developed a space debris tracking system for real-time detection and tracking of debris</li>
+                        <li>Implemented YOLOv5 for object detection, achieving accurate identification of debris in video frames</li>
+                        <li>Created a Kalman Filter-based prediction module, ensuring reliable future position tracking</li>
+                        <li>Applied visual tracking methods to analyze debris trajectory</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <div class="project-header">
+                        <h3>SignLinformer</h3>
+                        <a href="https://github.com/Ragu-123/signlanguage.git" class="github-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <p>August 2024</p>
+                    <p><em>Tools: Linformer, Python, PyTorch, How2sign, OpenPose, 3DJointLifting</em></p>
+                    <ul>
+                        <li>Developed the Signlinformer model for text-to-gesture translation with low computational complexity</li>
+                        <li>Implemented linformer architecture for accurate keypoint generation from text inputs</li>
+                        <li>Created video outputs with tracked gestures and predicted keypoint trajectories</li>
+                        <li>Developed a data preparation pipeline compatible with the How2Sign dataset</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <div class="project-header">
+                        <h3>Tasks</h3>
+                        <a href="https://github.com/Ragu-123/tasks.git" class="github-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <p>August 2024</p>
+                    <p><em>Tools: Python, Tkinter, PyQt, Plyer, Pyinstaller</em></p>
+                    <ul>
+                        <li>Developed a cross-platform task management app optimized for Windows with a modern UI</li>
+                        <li>Implemented multi-day reminders and flexible scheduling options</li>
+                        <li>Added calendar integration with daily, weekly, and monthly overviews</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <div class="project-header">
+                        <h3>Audify</h3>
+                        <a href="https://github.com/Ragu-123/audify.git" class="github-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                    <p>January 2025</p>
+                    <p><em>Tools: HTML, CSS, JavaScript, Python, Pygame, Yt-dlp, SpotDl</em></p>
+                    <ul>
+                        <li>Developed Audify, a music streaming app with online streaming and offline playback features</li>
+                        <li>Implemented YouTube integration for music search using Yt-dlp</li>
+                        <li>Created playlist management and seamless playback controls</li>
+                        <li>Built a recommendation system based on user history</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h2>Skills</h2>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3><i class="fas fa-code"></i> Programming</h3>
+                        <ul>
+                            <li><i class="fas fa-copyright"></i> C</li>
+                            <li><i class="fab fa-python"></i> Python</li>
+                            <li><i class="fab fa-java"></i> Java</li>
+                            <li><i class="fab fa-html5"></i> HTML</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-brain"></i> AI & ML</h3>
+                        <ul>
+                            <li><i class="fas fa-robot"></i> Machine Learning</li>
+                            <li><i class="fas fa-network-wired"></i> Deep Learning</li>
+                            <li><i class="fas fa-language"></i> Natural Language Processing</li>
+                            <li><i class="fas fa-eye"></i> Computer Vision</li>
+                            <li><i class="fas fa-project-diagram"></i> Neural Networks</li>
+                            <li><i class="fas fa-microchip"></i> Large Language Models</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3><i class="fas fa-tools"></i> Tools & Technologies</h3>
+                        <ul>
+                            <li><i class="fab fa-github"></i> Github</li>
+                            <li><i class="fab fa-python"></i> PyTorch</li>
+                            <li><i class="fab fa-aws"></i> AWS (S3, EC2)</li>
+                            <li><i class="fas fa-clock"></i> Time Management</li>
+                            <li><i class="fas fa-puzzle-piece"></i> Problem Solving</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Awards Section - Updated -->
+            <section id="achievements" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2>Awards & Hackathons</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>Koselay Award</h3>
+                    <p>IVDP Krishnagiri • August 2022</p>
+                    <p>Received for outstanding academic performance and excellence</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>SSF IBM Datathon</h3>
+                    <p>Shooting star and IBM • October 2024</p>
+                    <ul>
+                        <li>Participated in IBM Hackathon developing ML and CV solutions</li>
+                        <li>Gained hands-on experience in implementing real-world solutions</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>IIT Madras Shaastra IndustriAI</h3>
+                    <p>IIT Madras • January 2025</p>
+                    <ul>
+                        <li>Competed among 200+ teams</li>
+                        <li>Shortlisted to second round, ranking under top 50 teams</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Professional Memberships -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2>Professional Memberships</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>Computer Society of India</h3>
+                    <p>November 2023</p>
+                </div>
+            </section>
+
+            <!-- Additional Information -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h2>Additional Information</h2>
+                </div>
+                <div class="timeline-item">
+                    <h3>Languages</h3>
+                    <p>Tamil, English, Telugu</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Interests</h3>
+                    <ul>
+                        <li>Generative AI and Creative Applications</li>
+                        <li>Reinforcement Learning and Autonomous Systems</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // Loader transition
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').style.opacity = '0';
+                setTimeout(() => {
+                    document.querySelector('.loader').style.display = 'none';
+                }, 300);
+            }, 1000); // Changed from 3000 to 1000
+        });
+
+        // Smooth scroll and card interactions
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for fade-up animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.4s ease-out';
+            observer.observe(card);
+        });
+
+        // Update the active navigation item based on scroll position
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 60) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').slice(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('.nav-item').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const section = document.querySelector(this.getAttribute('href'));
+                const yOffset = -60;
+                const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            });
+        });
+
+        // Enhanced scroll observer for content sections
+        const contentObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Apply to all main content sections
+        document.querySelectorAll('.card').forEach(section => {
+            section.classList.add('content-section');
+            contentObserver.observe(section);
+        });
+
+        // Hide scroll indicator when scrolling starts
+        window.addEventListener('scroll', () => {
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (window.scrollY > 100) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '0.8';
+            }
+        });
+
+        // Smooth scroll for the initial scroll indicator
+        document.querySelector('.scroll-indicator').addEventListener('click', () => {
+            window.scrollTo({
+                top: window.innerHeight,
+                behavior: 'smooth'
+            });
+        });
+
+        // Enhanced scroll behavior
+        window.addEventListener('scroll', () => {
+            const mainContent = document.querySelector('.main-content');
+            const scrollPosition = window.scrollY;
+            
+            // Show/hide scroll indicator
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            if (scrollPosition > 100) {
+                scrollIndicator.style.opacity = '0';
+            } else {
+                scrollIndicator.style.opacity = '0.8';
+            }
+
+            // Add parallax effect to initial view
+            const initialView = document.querySelector('.initial-view');
+            initialView.style.transform = `translateY(${scrollPosition * 0.5}px)`;
+            initialView.style.opacity = 1 - (scrollPosition / 700);
+        });
+    </script>
 </body>
 </html>
