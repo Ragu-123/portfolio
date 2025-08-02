@@ -3,831 +3,1500 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragunath R</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Ragunath R - AI Engineer</title>
     <style>
-        :root {
-            --primary: #00D1FF;
-            --secondary: #7700FF;
-            --background: #0A0A0A;
-            --card-bg: #141414;
-            --text: #FFFFFF;
-            --text-secondary: #A0A0A0;
-            --border: #2A2A2A;
-            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
         }
-
+        
         body {
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.4;
         }
-
-        /* Apple-style Loader */
-        .loader {
+        
+        /* Nothing Phone UI - Clean dot pattern */
+        .dot-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--background);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: opacity 0.1s;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: -1;
         }
-
-        .apple-loader {
-            width: 48px;
-            height: 48px;
-            border: 3px solid var(--border);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        .container {
-            max-width: 1440px;
-            width: 95%;
-            margin: 0 auto;
-            padding: 2rem 1.5rem;
-            opacity: 0;
-            animation: fadeIn 0.5s 1s forwards; /* Changed from 3s to 1s */
-        }
-
-        /* Header Section */
-        .header {
-            text-align: center;
-            margin: 4rem 0;
-            padding: 2rem 0;
-            display: none; /* Hide the duplicate header in main content */
-        }
-
-        .name {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .contact-bar {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 1.5rem 0;
-            flex-wrap: wrap;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .contact-item:hover {
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        /* Content Cards */
-        .card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-            border: 1px solid var(--border);
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            backdrop-filter: blur(10px);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-            border-color: var(--primary);
-            background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-                        var(--gradient) border-box;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--gradient);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        /* Timeline Elements */
-        .timeline-item {
+        
+        /* Main Container */
+        .main-container {
             position: relative;
-            padding-left: 2rem;
-            margin: 2rem 0;
-            border-left: 2px solid var(--border);
+            z-index: 1;
         }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -9px;
+        
+        /* Navigation - Nothing Phone Style */
+        .nav {
+            position: fixed;
             top: 0;
-            width: 16px;
-            height: 16px;
-            background: var(--gradient);
-            border: none;
-            border-radius: 50%;
+            width: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            z-index: 1000;
+            padding: 0;
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
         }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.02em;
         }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                padding: 1rem;
-            }
-            
-            .name {
-                font-size: 2rem;
-            }
-            
-            .card {
-                padding: 1.5rem;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Add these new styles */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-
-        .skill-category h3 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-category ul {
+        
+        .nav-menu {
+            display: flex;
+            gap: 0;
             list-style: none;
         }
-
-        .skill-category li {
-            margin: 0.5rem 0;
-            padding-left: 1.5rem;
-            position: relative;
+        
+        .nav-item {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 24px;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            transition: all 0.2s ease;
+            border-radius: 6px;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+        
+        /* Page Sections */
+        .page {
+            min-height: 100vh;
+            display: none;
+            padding-top: 80px;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .page-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        /* Hero Section - Nothing Phone Style */
+        .hero {
             display: flex;
             align-items: center;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+        
+        .hero-content {
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .hero-title {
+            font-size: clamp(48px, 8vw, 120px);
+            font-weight: 200;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+        
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 40px;
+            letter-spacing: -0.01em;
+        }
+        
+        .hero-description {
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+            max-width: 500px;
+            margin-bottom: 60px;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        
+        /* Nothing Phone Buttons */
+        .btn {
+            padding: 16px 32px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 24px;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.01em;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: #fff;
+            color: #000;
         }
 
-        .skill-category li:before {
-            display: none;
+        .know-more {
+            padding: 8px 16px !important; /* Smaller padding */
+            font-size: 12px !important; /* Smaller font */
+            background: rgba(255,255,255,0.9) !important; /* Reduced white opacity */
+            border-radius: 16px !important; /* Smaller border radius */
         }
-
-        .skill-category li i {
-            margin-right: 10px;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            width: 20px;
-            text-align: center;
+        
+        .know-more:hover {
+            background: rgba(255, 255, 255, 0.6) !important; /* Even more transparent on hover */
         }
-
-        .skill-category h3 i {
-            margin-right: 10px;
-            color: var(--secondary);
+        
+        .btn-primary:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-1px);
         }
-
+        
+        .btn-secondary {
+            background: transparent;
+            color: rgba(255,255,255,0.8);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            margin-bottom: 80px;
+        }
+        
+        .section-title {
+            font-size: 64px;
+            font-weight: 200;
+            color: #fff;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        
+        .section-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: -0.01em;
+        }
+        
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-bottom: 100px;
+        }
+        
+        .about-item h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .about-item p {
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .about-item .highlight {
+            color: #fff;
+            font-weight: 400;
+        }
+        
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            column-gap: 32px;
+            row-gap: 40px;
+            margin-bottom: 100px;
+        }
+        
+        .project-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    min-height: 260px; /* Add this line to increase height */
+}
+        
+        .project-card:hover {
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+        }
+        
         .project-header {
+            padding: 32px 32px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        
+        .project-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        
+        .project-summary {
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.5;
+        }
+        
+        .project-footer {
+            padding: 24px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .github-link {
-            color: var(--text);
-            font-size: 1.2rem;
-            transition: color 0.2s ease;
+        
+        .project-tech {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
-
-        .github-link:hover {
-            color: var(--primary);
+        
+        .project-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 16px;
         }
-
-        /* Add these new navigation styles */
-        .nav-container {
-            position: sticky;
+        
+        /* Project Detail Modal */
+        .project-modal {
+            position: fixed;
             top: 0;
-            background: rgba(20, 20, 20, 0.8);
-            padding: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            z-index: 100;
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(20px);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
         }
-
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
+        
+        .project-modal.active {
+            display: block;
         }
-
-        .nav-item {
-            color: var(--text);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+        
+        .project-modal-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
             transition: all 0.2s ease;
         }
-
-        .nav-item:hover, .nav-item.active {
-            background: var(--gradient);
-            color: white;
+        
+        .modal-close:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
         }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                gap: 0.5rem;
-            }
-            .nav-item {
-                padding: 0.3rem 0.8rem;
-                font-size: 0.9rem;
-            }
+        
+        .project-detail-header {
+            margin-bottom: 60px;
         }
-
-        .timeline-item {
-            border-left-color: var(--border);
+        
+        .project-detail-title {
+            font-size: 48px;
+            font-weight: 200;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
         }
-
-        .section-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 2rem 0;
+        
+        .project-detail-meta {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 32px;
         }
-
-        /* Additional styles for better readability */
-        p, li {
-            color: var(--text-secondary);
-        }
-
-        h2, h3 {
-            color: var(--text);
-        }
-
-        em {
-            color: var(--primary);
-            font-style: normal;
-        }
-
-        .initial-view {
-            height: 100vh;
+        
+        .project-meta-item {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            padding: 2rem;
+            gap: 4px;
         }
-
-        .initial-view .contact-bar {
-            margin: 1rem 0;
-        }
-
-        .initial-view .name {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            color: var(--text);
-            text-align: center;
-            opacity: 0.8;
-        }
-
-        .scroll-indicator i {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .scroll-text {
-            font-size: 0.9rem;
+        
+        .project-meta-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.4);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 0.02em;
         }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateX(-50%) translateY(0);
+        
+        .project-meta-value {
+            font-size: 14px;
+            font-weight: 400;
+            color: #fff;
+        }
+        
+        .project-detail-description {
+            font-size: 18px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            margin-bottom: 60px;
+        }
+        
+        .project-detail-section {
+            margin-bottom: 50px;
+        }
+        
+        .project-detail-section h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+        
+        .project-detail-section p,
+        .project-detail-section li {
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .project-detail-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .project-detail-section li::before {
+            content: "→";
+            color: rgba(255,255,255,0.3);
+            margin-right: 12px;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .tech-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        
+        .skill-category {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 32px;
+        }
+        
+        .skill-category h3 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: -0.01em;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            font-size: 15px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.6);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Contact Grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+        
+        .contact-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+        
+        .contact-card:hover {
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+        }
+        
+        .contact-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            display: block;
+            color: rgba(255,255,255,0.8);
+            font-family: monospace;  /* Ensures consistent icon rendering */
+        }
+        
+        .contact-card h3 {
+            font-size: 16px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .contact-card p {
+            font-size: 14px;
+            font-weight: 300;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 16px 20px;
             }
-            40% {
-                transform: translateX(-50%) translateY(-20px);
+            
+            .page-content {
+                padding: 40px 20px;
             }
-            60% {
-                transform: translateX(-50%) translateY(-10px);
+            
+            .hero-title {
+                font-size: 48px;
+            }
+            
+            .section-title {
+                font-size: 40px;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-modal-content {
+                padding: 60px 20px;
+            }
+            
+            .modal-close {
+                top: 20px;
+                right: 20px;
+            }
+            
+            .project-detail-title {
+                font-size: 32px;
+            }
+            
+            .project-detail-meta {
+                flex-direction: column;
+                gap: 20px;
             }
         }
-
-        .content-section {
+        
+        /* Smooth animations */
+        .fade-in {
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.6s ease-out;
+            transition: all 0.6s ease;
         }
-
-        .content-section.visible {
+        
+        .fade-in.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .main-content {
-            background: var(--background);
-            position: relative;
-            z-index: 2;
-            padding-top: 2rem;
-            min-height: 100vh;
+        .modal-actions {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .modal-action-btn {
+            padding: 8px 16px !important;
+            font-size: 14px !important;
+        }
+
+        .project-actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-actions {
+                top: 20px;
+                right: 20px;
+            }
+        }
+
+        .project-card-actions {
+            margin-top: 16px;
+            padding: 0 32px 24px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-    <!-- Apple-style Loader -->
-    <div class="loader">
-        <div class="apple-loader"></div>
-    </div>
-
-    <div class="container">
-        <div class="initial-view">
-            <h1 class="name">Ragunath R</h1>
-            <div class="contact-bar">
-                <a href="tel:7825078508" class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    +91 7825078508
-                </a>
-                <a href="mailto:ragunathravi73@gmail.com" class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    ragunathravi73@gmail.com
-                </a>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    Chennai, India
+    <div class="dot-grid"></div>
+    
+    <div class="main-container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <div class="logo">Ragunath R</div>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="about">About</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="projects">Projects</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="skills">Skills</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Home Page -->
+        <div class="page active" id="home">
+            <div class="page-content">
+                <div class="hero">
+                    <div class="hero-content">
+                        <p class ="hero-subtitle">Aspiring</p>
+                        <h1 class="hero-title">AI Engineer</h1>
+                        <p class="hero-subtitle">Machine Learning • Natural Language Processing • Computer Vision</p>
+                        <p class="hero-description">
+                            Aspiring AI Engineer and recent graduate with a strong passion for artificial intelligence, 
+                            machine learning, natural language processing, and computer vision. Eager to contribute to 
+                            industrial applications of AI, explore innovative solutions in NLP and CV, and gain hands-on 
+                            experience through challenging projects while driving impactful advancements in these fields.
+                        </p>
+                        <div class="hero-actions">
+                            <!-- Update data-page attribute for navigation -->
+                            <a href="#" class="btn btn-primary" data-page="projects">View Projects</a>
+                            <a href="#" class="btn btn-secondary" data-page="contact">Get in Touch</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="contact-bar">
-                <a href="www.linkedin.com/in/ragunath-r-a2a580247" class="contact-item">
-                    <i class="fab fa-linkedin"></i>
-                    LinkedIn
-                </a>
-                <a href="https://github.com/Ragu-123" class="contact-item">
-                    <i class="fab fa-github"></i>
-                    GitHub
-                </a>
-                <a href="https://drive.google.com/file/d/1ZmJ5mlok_NsqE5Y-RRTvaS3WOA72u8B4/view" class="contact-item">
-                    <i class="fas fa-file-pdf"></i>
-                    Resume
-                </a>
-            </div>
-            <div class="scroll-indicator">
-                <i class="fas fa-chevron-down"></i>
-                <div class="scroll-text">Scroll to explore</div>
             </div>
         </div>
+        
+        <!-- About Page -->
+        <div class="page" id="about">
+            <div class="page-content">
+                <div class="section-header">
+                    <h2 class="section-title">About</h2>
+                    <p class="section-subtitle">AI Engineering Student & Research Enthusiast</p>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="about-item">
+                        <h3>Education</h3>
+                        <p><span class="highlight">B.Tech Artificial Intelligence and Machine Learning</span><br>
+                        Saveetha Engineering College, Chennai<br>
+                        GPA: 7.9/10.00 (2022-2026)</p>
+                        
+                        <p><span class="highlight">Pre-University Education</span><br>
+                        Kalaimagal Kalalaya Metric Higher Secondary School<br>
+                        Grade: 86.16% (2022)</p>
+                        
+                        <p><span class="highlight">Secondary Education</span><br>
+                        Kalaimagal Kalalaya Metric Higher Secondary School<br>
+                        Grade: 98.8% (2020)</p>
+                    </div>
+                    
+                    <div class="about-item">
+                        <h3>Experience & Achievements</h3>
+                        <p><span class="highlight">AI Engineer Intern</span><br>
+                        Built facial recognition system using Vision Transformer achieving 96% accuracy. 
+                        Enhanced model performance through data augmentation techniques and analyzed 
+                        50,000 images to improve feature detection capabilities.</p>
+                        
+                        <p><span class="highlight">Recent Highlights</span><br>
+                        • IIT Madras Shaastra IndustriAI - Ranked top 50 among 200+ teams<br>
+                        • IBM Datathon Participant - ML and Computer Vision solutions<br>
+                        • Koselay Award recipient for outstanding academic performance</p>
+                    </div>
+                </div>
+                
+                <div class="about-item">
+                    <h3>Research Interests</h3>
+                    <p>My work focuses on the intersection of natural language processing and computer vision, 
+                    with particular interest in multimodal AI systems, retrieval-augmented generation, 
+                    and domain-specific language models. I'm passionate about making AI more accessible 
+                    through regional language support and medical AI applications.</p>
+                </div>
 
-        <div class="main-content">
-            <!-- Remove duplicate header section -->
-            
-            <!-- Navigation Menu -->
-            <nav class="nav-container">
-                <div class="nav-menu">
-                    <a href="#about" class="nav-item">About</a>
-                    <a href="#experience" class="nav-item">Experience</a>
-                    <a href="#education" class="nav-item">Education</a>
-                    <a href="#projects" class="nav-item">Projects</a>
-                    <a href="#skills" class="nav-item">Skills</a>
-                    <a href="#achievements" class="nav-item">Achievements</a>
+                <div class="about-item">
+                    <h3>Certifications</h3>
+                    <p>• Machine Translation (Coursera)<br>
+                       • Exploratory Data Analysis for Machine Learning(coursera)<br>
+                       • LangChain Chat with Your Data(coursera)<br>
+                       • Supervised Machine Learning: Classification(coursera)<br>
+                    </p>
                 </div>
-            </nav>
+            </div>
+        </div>
+        
+        <!-- Projects Page -->
+        <div class="page" id="projects">
+            <div class="page-content">
+                <div class="section-header">
+                    <h2 class="section-title">Projects</h2>
+                    <p class="section-subtitle">Featured AI & Machine Learning Projects</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card" data-project="docagent">
+                        <div class="project-header">
+                            <h3 class="project-title">DocAgent</h3>
+                            <p class="project-summary">Agentic RAG-powered multi-format document QA system with specialized agents</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">LangChain • RAG • Llama 3.1</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" data-project="tamil-asr">
+                        <div class="project-header">
+                            <h3 class="project-title">Tamil Speech-to-Text ASR</h3>
+                            <p class="project-summary">Fine-tuned Whisper model for Tamil automatic speech recognition</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">OpenAI Whisper • PyTorch • HuggingFace</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" data-project="histopathology">
+                        <div class="project-header">
+                            <h3 class="project-title">Histopathology Image Captioning</h3>
+                            <p class="project-summary">Medical image captioning model using fine-tuned BLIP architecture</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">BLIP • Medical AI • Computer Vision</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
+                    </div>
 
-            <!-- About Section (Combines Objective and Basic Info) -->
-            <section id="about" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-bullseye"></i>
+                    <div class="project-card" data-project="tamil-voice-corpus">
+                        <div class="project-header">
+                            <h3 class="project-title">TamilVoiceCorpus-Dataset</h3>
+                            <p class="project-summary">A large-scale Tamil Conversational ASR dataset by crawling and curating speech data from various public online sources</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">Datasets •Web Scrapping  • HuggingFace</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
                     </div>
-                    <h2>Objective</h2>
-                </div>
-                <p>Aspiring AI Engineer and recent graduate with a strong passion for artificial intelligence, machine learning, natural language processing, and computer vision. As a fresher, I am eager to contribute to industrial applications of AI, explore innovative solutions in NLP and CV, and gain hands-on experience through challenging projects while driving impactful advancements in these fields.
-                </p>
-            </section>
 
-            <!-- Experience Section (Combines Experience and Research) -->
-            <section id="experience" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <h2>Experience & Research</h2>
-                </div>
-                <div class="timeline-item">
-                    <h3>Retech Technologies</h3>
-                    <p>AI Engineer Intern • June 2024 - July 2024</p>
-                    <ul class="experience-list">
-                        <li>Built facial recognition system with Vision Transformer (96% accuracy)</li>
-                        <li>Enhanced model performance with data augmentation techniques</li>
-                    </ul>
-                </div>
-                <div class="section-divider"></div>
-                <div class="timeline-item">
-                    <h3>SignLinformer: From Text to Gesture Translation</h3>
-                    <p>2024</p>
-                    <p>Research is currently in progress to explore and develop this study.</p>
-                </div>
-            </section>
+                    
 
-            <!-- Education Section (Combines Education and Certifications) -->
-            <section id="education" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-graduation-cap"></i>
+                    <div class="project-card" data-project="COT">
+                        <div class="project-header">
+                            <h3 class="project-title">Chain-of-Thought(Math)-Dataset</h3>
+                            <p class="project-summary">This dataset is a preprocessed and filtered subset of the NVIDIA Open Math Reasoning Dataset, focused on the Chain-of-Thought (CoT) reasoning split. It has been adapted fine-tuning, such as LLaMA and similar architectures.</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">COT • OpenMath • Preprocessed for llama</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
                     </div>
-                    <h2>Education & Certifications</h2>
-                </div>
-                <div class="timeline-item">
-                    <h3>Saveetha Engineering College</h3>
-                    <p>B.Tech Artificial Intelligence and Machine Learning • May 2022 - May 2026</p>
-                    <p>GPA: 8.00/10.00</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Kalaimagal Kalalaya Metric Higher Secondary School</h3>
-                    <p>Pre-University Education • May 2022</p>
-                    <p>Grade: 86.16%</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Kalaimagal Kalalaya Metric Higher Secondary School</h3>
-                    <p>Secondary Education • May 2020</p>
-                    <p>Grade: 98.8%</p>
-                </div>
-                <div class="section-divider"></div>
-                <div class="timeline-item">
-                    <h3>Machine Translation</h3>
-                    <p>Coursera • January 2025</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Introduction to Computer Vision</h3>
-                    <p>Coursera • January 2025</p>
-                </div>
-            </section>
 
-            <!-- Projects Section -->
-            <section id="projects" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-code"></i>
+                    <div class="project-card" data-project="Space-debris">
+                        <div class="project-header">
+                            <h3 class="project-title">Space Debris Tracking</h3>
+                            <p class="project-summary">This project demonstrates a space debris tracking system using YOLOv5 for object detection and a Kalman Filter to predict and track the debris's trajectory in real time.</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">Yolov5 • Kalmanfilter • Object detection</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
                     </div>
-                    <h2>Projects</h2>
-                </div>
-                <div class="timeline-item">
-                    <div class="project-header">
-                        <h3>Space Debris Tracking</h3>
-                        <a href="https://github.com/Ragu-123/space-debris-tracking-and-path-prediction.git" class="github-link">
-                            <i class="fab fa-github"></i>
-                        </a>
+                   
+                    <div class="project-card" data-project="Audify">
+                        <div class="project-header">
+                            <h3 class="project-title">Audify</h3>
+                            <p class="project-summary">Audify is a versatile music streaming app that combines the best of online streaming and offline playback. With a sleek and responsive user interface.</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">WebScraping • Html/css • Flask/python</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
                     </div>
-                    <p>April 2024</p>
-                    <p><em>Tools: Python, YOLOv5, PyTorch, OpenCV, Kalman Filter</em></p>
-                    <ul>
-                        <li>Developed a space debris tracking system for real-time detection and tracking of debris</li>
-                        <li>Implemented YOLOv5 for object detection, achieving accurate identification of debris in video frames</li>
-                        <li>Created a Kalman Filter-based prediction module, ensuring reliable future position tracking</li>
-                        <li>Applied visual tracking methods to analyze debris trajectory</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <div class="project-header">
-                        <h3>SignLinformer</h3>
-                        <a href="https://github.com/Ragu-123/signlanguage.git" class="github-link">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                    <p>August 2024</p>
-                    <p><em>Tools: Linformer, Python, PyTorch, How2sign, OpenPose, 3DJointLifting</em></p>
-                    <ul>
-                        <li>Developed the Signlinformer model for text-to-gesture translation with low computational complexity</li>
-                        <li>Implemented linformer architecture for accurate keypoint generation from text inputs</li>
-                        <li>Created video outputs with tracked gestures and predicted keypoint trajectories</li>
-                        <li>Developed a data preparation pipeline compatible with the How2Sign dataset</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <div class="project-header">
-                        <h3>Tasks</h3>
-                        <a href="https://github.com/Ragu-123/tasks.git" class="github-link">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                    <p>August 2024</p>
-                    <p><em>Tools: Python, Tkinter, PyQt, Plyer, Pyinstaller</em></p>
-                    <ul>
-                        <li>Developed a cross-platform task management app optimized for Windows with a modern UI</li>
-                        <li>Implemented multi-day reminders and flexible scheduling options</li>
-                        <li>Added calendar integration with daily, weekly, and monthly overviews</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <div class="project-header">
-                        <h3>Audify</h3>
-                        <a href="https://github.com/Ragu-123/audify.git" class="github-link">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                    <p>January 2025</p>
-                    <p><em>Tools: HTML, CSS, JavaScript, Python, Pygame, Yt-dlp, SpotDl</em></p>
-                    <ul>
-                        <li>Developed Audify, a music streaming app with online streaming and offline playback features</li>
-                        <li>Implemented YouTube integration for music search using Yt-dlp</li>
-                        <li>Created playlist management and seamless playback controls</li>
-                        <li>Built a recommendation system based on user history</li>
-                    </ul>
-                </div>
-            </section>
 
-            <!-- Skills Section -->
-            <section id="skills" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-tools"></i>
+                    <div class="project-card" data-project="Tasks">
+                        <div class="project-header">
+                            <h3 class="project-title">Tasks</h3>
+                            <p class="project-summary">Tasks App is a lightweight, powerful, and user-friendly task management tool designed to help individuals and teams organize their tasks efficiently.</p>
+                        </div>
+                        <div class="project-footer">
+                            <span class="project-tech">Tkinter  • python</span>
+                            <span class="project-arrow">→</span>
+                        </div>
+                        <div class="project-card-actions">
+                            <a href="#" class="btn btn-primary know-more">Know More</a>
+                        </div>
                     </div>
-                    <h2>Skills</h2>
+                    
+
                 </div>
+            </div>
+        </div>
+        
+        <!-- Skills Page -->
+        <div class="page" id="skills">
+            <div class="page-content">
+                <div class="section-header">
+                    <h2 class="section-title">Skills</h2>
+                    <p class="section-subtitle">Technical Expertise & Tools</p>
+                </div>
+                
                 <div class="skills-grid">
                     <div class="skill-category">
-                        <h3><i class="fas fa-code"></i> Programming</h3>
-                        <ul>
-                            <li><i class="fas fa-copyright"></i> C</li>
-                            <li><i class="fab fa-python"></i> Python</li>
-                            <li><i class="fab fa-java"></i> Java</li>
-                            <li><i class="fab fa-html5"></i> HTML</li>
+                        <h3>Programming Languages</h3>
+                        <ul class="skill-list">
+                            <li>Python (Advanced)</li>
+                            <li>Java</li>
+                            <li>C</li>
+                            <li>HTML/CSS</li>
                         </ul>
                     </div>
+                    
                     <div class="skill-category">
-                        <h3><i class="fas fa-brain"></i> AI & ML</h3>
-                        <ul>
-                            <li><i class="fas fa-robot"></i> Machine Learning</li>
-                            <li><i class="fas fa-network-wired"></i> Deep Learning</li>
-                            <li><i class="fas fa-language"></i> Natural Language Processing</li>
-                            <li><i class="fas fa-eye"></i> Computer Vision</li>
-                            <li><i class="fas fa-project-diagram"></i> Neural Networks</li>
-                            <li><i class="fas fa-microchip"></i> Large Language Models</li>
+                        <h3>AI/ML Frameworks</h3>
+                        <ul class="skill-list">
+                            <li>PyTorch</li>
+                            <li>Scikit-Learn</li>
+                            <li>TensorFlow</li>
+                            <li>HuggingFace Transformers</li>
+                            <li>OpenAI Whisper</li>
                         </ul>
                     </div>
+                    
                     <div class="skill-category">
-                        <h3><i class="fas fa-tools"></i> Tools & Technologies</h3>
-                        <ul>
-                            <li><i class="fab fa-github"></i> Github</li>
-                            <li><i class="fab fa-python"></i> PyTorch</li>
-                            <li><i class="fab fa-aws"></i> AWS (S3, EC2)</li>
-                            <li><i class="fas fa-clock"></i> Time Management</li>
-                            <li><i class="fas fa-puzzle-piece"></i> Problem Solving</li>
+                        <h3>Deep Learning & NLP</h3>
+                        <ul class="skill-list">
+                            <li>Large Language Models</li>
+                            <li>Fine-tuning Techniques</li>
+                            <li>Transformer Architectures</li>
+                            <li>Computer Vision</li>
+                            <li>Retrieval-Augmented Generation</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>Tools & Platforms</h3>
+                        <ul class="skill-list">
+                            <li>AWS (S3, EC2)</li>
+                            <li>Vector Databases (FAISS, Chroma)</li>
+                            <li>LangChain Agents</li>
+                            <li>Jupyter Notebooks</li>
+                            <li>Git & GitHub</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>Specialized Skills</h3>
+                        <ul class="skill-list">
+                            <li>Prompt Engineering</li>
+                            <li>Model Optimization</li>
+                            <li>Data Augmentation</li>
+                            <li>Network Graph Visualization</li>
+                            <li>Multimodal AI Systems</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>Soft Skills</h3>
+                        <ul class="skill-list">
+                            <li>Problem Solving</li>
+                            <li>Critical Thinking</li>
+                            <li>Team Collaboration</li>
+                            <li>Time Management</li>
+                            <li>Research & Analysis</li>
                         </ul>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+        
+        <!-- Contact Page -->
+        <div class="page" id="contact">
+            <div class="page-content">
+                <div class="section-header">
+                    <h2 class="section-title">Contact/Connect with Me</h2>
+                    <p class="section-subtitle">Let's build something amazing together</p>
+                </div>
+                
+                <div class="contact-grid">
+                    <a href="mailto:ragunathravi73@gmail.com" class="contact-card">
+                        <span class="contact-icon">✉</span>
+                        <h3>Email</h3>
+                        <p>ragunathravi73@gmail.com</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/ragunath-r-a2a580247/" target="_blank" class="contact-card">
+                        <span class="contact-icon">[in]</span>
+                        <h3>LinkedIn</h3>
+                        <p>Professional Network</p>
+                    </a>
 
-            <!-- Awards Section - Updated -->
-            <section id="achievements" class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-trophy"></i>
+                    <a href="https://drive.google.com/file/d/1QDOGeGut5QTdZYIPwNTonxjFnXWFeuTq/view?usp=sharing" target="_blank" class="contact-card">
+                        <span class="contact-icon">[R]</span>
+                        <h3>Resume</h3>
+                        <p>view/download</p>
+                    </a>
+                    <a href="https://github.com/Ragu-123" target="_blank" class="contact-card">
+                        <span class="contact-icon">[/]</span>
+                        <h3>GitHub</h3>
+                        <p>Code Repository</p>
+                    </a>
+                    
+                    <a href="https://huggingface.co/ragunath-ravi" target="_blank" class="contact-card">
+                        <span class="contact-icon">\_(ツ)_/</span>
+                        <h3>HuggingFace</h3>
+                        <p>AI Models & Datasets</p>
+                    </a>
+                </div>
+                
+                <div style="text-align: center; margin-top: 60px; color: rgba(255,255,255,0.4);">
+                    <p>◉ Chennai, Tamil Nadu, India • ☏ +91 7825078508</p>
+                    <p style="margin-top: 16px; font-size: 14px;">Languages: Tamil, English, Telugu</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Page -->
+        <div class="page" id="certifications">
+            <div class="page-content">
+                <div class="section-header">
+                    <h2 class="section-title">Certifications</h2>
+                    <p class="section-subtitle">Professional Development & Learning</p>
+                </div>
+                
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Coursera Certifications</h3>
+                        <ul class="skill-list">
+                            <li>Machine Translation (January 2025)</li>
+                            <li>Exploratory Data Analysis for Machine Learning</li>
+                            <li>LangChain Chat with Your Data</li>
+                        </ul>
                     </div>
-                    <h2>Awards & Hackathons</h2>
                 </div>
-                <div class="timeline-item">
-                    <h3>Koselay Award</h3>
-                    <p>IVDP Krishnagiri • August 2022</p>
-                    <p>Received for outstanding academic performance and excellence</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>SSF IBM Datathon</h3>
-                    <p>Shooting star and IBM • October 2024</p>
-                    <ul>
-                        <li>Participated in IBM Hackathon developing ML and CV solutions</li>
-                        <li>Gained hands-on experience in implementing real-world solutions</li>
-                    </ul>
-                </div>
-                <div class="timeline-item">
-                    <h3>IIT Madras Shaastra IndustriAI</h3>
-                    <p>IIT Madras • January 2025</p>
-                    <ul>
-                        <li>Competed among 200+ teams</li>
-                        <li>Shortlisted to second round, ranking under top 50 teams</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- Professional Memberships -->
-            <section class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project Modals -->
+    <div class="project-modal" id="modal-docagent">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">DocAgent</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">August 2024</span>
                     </div>
-                    <h2>Professional Memberships</h2>
-                </div>
-                <div class="timeline-item">
-                    <h3>Computer Society of India</h3>
-                    <p>November 2023</p>
-                </div>
-            </section>
-
-            <!-- Additional Information -->
-            <section class="card">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-info-circle"></i>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Agentic RAG System</span>
                     </div>
-                    <h2>Additional Information</h2>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
                 </div>
-                <div class="timeline-item">
-                    <h3>Languages</h3>
-                    <p>Tamil, English, Telugu</p>
+                <p class="project-detail-description">
+                    An advanced agentic document QA system that leverages Retrieval-Augmented Generation (RAG) 
+                    with Model Context Protocol (MCP) to create intelligent agents capable of parsing, embedding, 
+                    retrieving, and answering queries from multiple document formats.
+                </p>
+            </div>
+            
+            <div class="project-detail-section">
+                <h3>Architecture & Design</h3>
+                <p>DocAgent employs a sophisticated multi-agent architecture where specialized agents handle different aspects of document processing:</p>
+                <ul>
+                    <li><strong>Ingestion Agent:</strong> Handles document parsing and pre-processing</li>
+                    <li><strong>Retrieval Agent:</strong> Performs semantic search using FAISS</li>
+                    <li><strong>LLM Response Agent:</strong> Generates responses using Llama 3.1 8b</li>
+                    <li><strong>Coordinator Agent:</strong> Orchestrates communication between agents</li>
+                </ul>
+            </div>
+            <div class="project-detail-section">
+                <h3>Tools & Tech Stack</h3>
+                <p>Built with LangChain, HuggingFace Inference Client, Llama 3.1 8b, FAISS, and Gradio. The system leverages Retrieval-Augmented Generation (RAG) with a Model Context Protocol (MCP) for coordinated multi-format document QA.</p>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/docagent" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://huggingface.co/spaces/ragunath-ravi/DocAgent" target="_blank" class="btn btn-primary">
+                    <span>Demo↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-modal" id="modal-tamil-asr">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Tamil Speech-to-Text ASR</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">March 2025</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Automatic Speech Recognition</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
                 </div>
-                <div class="timeline-item">
-                    <h3>Interests</h3>
-                    <ul>
-                        <li>Generative AI and Creative Applications</li>
-                        <li>Reinforcement Learning and Autonomous Systems</li>
-                    </ul>
-                </div>
-            </section>
-
+                <p class="project-detail-description">
+                    Fine-tuned OpenAI's Whisper model for Tamil automatic speech recognition using 
+                    a custom dataset of over 80 hours own conversational Tamil audio dataset.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Key Achievements</h3>
+                <ul>
+                    <li>Achieved Word Error Rate (WER) of 22</li>
+                    <li>Preprocessed and augmented dataset for accent diversity</li>
+                    <li>Used Hugging Face for training and versioning</li>
+                </ul>
+            </div>
+             <div class="project-detail-section">
+                <h3>Training and evaluation data</h3>
+                <p>The model was fine-tuned on a custom web-scraped dataset called "whisperaudio" (available at ragunath123/whisperaudio on Hugging Face). This dataset consists of Tamil speech audio paired with accurate transcriptions.
+                    For training, 12,000 samples were used from the dataset, while 3,000 samples were used for evaluation. The audio was processed by resampling from 48kHz to 16kHz to match Whisper's requirements.
+                    The dataset includes a diverse range of Tamil speech samples, which helps the model generalize across different speakers, accents, and content types.</p>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/whisper-mini-ta.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://huggingface.co/spaces/ragunath-ravi/whisper-tamil" target="_blank" class="btn btn-primary">
+                    <span>Demo↗</span>
+                </a>
+                <a href="https://huggingface.co/ragunath-ravi/whisper-mini-ta" target="_blank" class="btn btn-primary">
+                    <span>Huggingface↗</span>
+                </a>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Loader transition
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.querySelector('.loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.querySelector('.loader').style.display = 'none';
-                }, 300);
-            }, 1000); // Changed from 3000 to 1000
-        });
+    <div class="project-modal" id="modal-tamil-voice-corpus">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">TamilVoiceCorpus</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">March 2025</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value"> Dataset-Automatic Speech Recognition</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    TamilVoiceCorpus is an open-source Tamil speech dataset, and built from publicly available sources. 
+                    It is intended for use in training and evaluating automatic speech recognition (ASR) systems and other speech processing models for the Tamil language.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Dataset Structure</h3>
+                <h3>• PureVox</h3>
+                <p>The PureVox subset contains cleaner audio with minimal background noise, making it ideal for baseline ASR model training and evaluation.</p>
+                <h3>• AmbientVox</h3>
+                <p>The AmbientVox subset includes audio with background noise, simulating real-world conditions for more robust ASR model training.</p>
+            </div>
 
-        // Smooth scroll and card interactions
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Intersection Observer for fade-up animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = 1;
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        });
-
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.opacity = 0;
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'all 0.4s ease-out';
-            observer.observe(card);
-        });
-
-        // Update the active navigation item based on scroll position
-        const sections = document.querySelectorAll('section[id]');
-        const navItems = document.querySelectorAll('.nav-item');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 60) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navItems.forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('href').slice(1) === current) {
-                    item.classList.add('active');
-                }
-            });
-        });
-
-        // Add smooth scroll behavior
-        document.querySelectorAll('.nav-item').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const section = document.querySelector(this.getAttribute('href'));
-                const yOffset = -60;
-                const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            });
-        });
-
-        // Enhanced scroll observer for content sections
-        const contentObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        // Apply to all main content sections
-        document.querySelectorAll('.card').forEach(section => {
-            section.classList.add('content-section');
-            contentObserver.observe(section);
-        });
-
-        // Hide scroll indicator when scrolling starts
-        window.addEventListener('scroll', () => {
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (window.scrollY > 100) {
-                scrollIndicator.style.opacity = '0';
-            } else {
-                scrollIndicator.style.opacity = '0.8';
-            }
-        });
-
-        // Smooth scroll for the initial scroll indicator
-        document.querySelector('.scroll-indicator').addEventListener('click', () => {
-            window.scrollTo({
-                top: window.innerHeight,
-                behavior: 'smooth'
-            });
-        });
-
-        // Enhanced scroll behavior
-        window.addEventListener('scroll', () => {
-            const mainContent = document.querySelector('.main-content');
-            const scrollPosition = window.scrollY;
+            <div class="project-detail-section">
+                <h3>Info</h3>
+                <p>This is a dataset for Automatic Speech Recognition (ASR) focused on conversational Tamil, collected from various public sources on the web. 
+                    Each sample is a short audio clip (averaging 10 seconds) paired with its corresponding transcription.</p>
+            </div>
             
-            // Show/hide scroll indicator
-            const scrollIndicator = document.querySelector('.scroll-indicator');
-            if (scrollPosition > 100) {
-                scrollIndicator.style.opacity = '0';
-            } else {
-                scrollIndicator.style.opacity = '0.8';
-            }
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/TamilVoiceCorpus.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://huggingface.co/datasets/ragunath-ravi/TamilVoiceCorpus" target="_blank" class="btn btn-primary">
+                    <span>Huggingface-Datasets↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-modal" id="modal-COT">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Chain-of-Thought(Math)-Dataset</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">May 2025</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value"> Dataset-Math Reasoning(Chain of Thought)</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    This dataset is a preprocessed and filtered subset of the NVIDIA Open Math Reasoning Dataset, focused on the Chain-of-Thought (CoT) reasoning split. It has been adapted for compatibility with large language model (LLM) fine-tuning, such as LLaMA and similar architectures.
+                    Each sample includes a math problem, detailed step-by-step reasoning, and the final answer — all structured as a single natural language text field, making it plug-and-play for autoregressive training.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Dataset Summary</h3>
+                <ul>
+                    <li>Split: Chain of Thought (CoT) only</li>
+                    <li>Total Rows: 3,201,061</li>
+                    <li>Data Format: Plain text, LLM-tokenizer friendly</li>
+                    <li>Primary Use Case: Training and evaluating LLMs on complex mathematical reasoning tasks using chain-of-thought prompting</li>
+                </ul>
+            </div>
+             <div class="project-detail-section">
+                <h3>Source</h3>
+                <ul>
+                    <li>Original Dataset: NVIDIA Open Math Reasoning</li>
+                    <li>This Version: Chain-of-Thought split, extracted and preprocessed for LLM use (cleaned, formatted, deduplicated where necessary)</li>
+                </ul>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://huggingface.co/datasets/ragunath-ravi/processed_cot_dataset" target="_blank" class="btn btn-primary">
+                    <span>Huggingface-Datasets↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
-            // Add parallax effect to initial view
-            const initialView = document.querySelector('.initial-view');
-            initialView.style.transform = `translateY(${scrollPosition * 0.5}px)`;
-            initialView.style.opacity = 1 - (scrollPosition / 700);
+    <div class="project-modal" id="modal-Tasks">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Tasks</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">December 2024</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Tasks/Notes</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    Tasks App is a lightweight, powerful, and user-friendly task management tool designed to help individuals and teams organize their tasks efficiently.
+                 With advanced features, sleek UI, and smart integrations, it's your ultimate productivity companion.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Task Management</h3>
+                <ul>
+                    <li>Create, edit, and delete tasks with rich details.</li>
+                    <li>Quick add feature for rapid task entry.</li>
+                    <li>Mark tasks as complete with one click.</li>
+                    <li>Organize tasks by categories and priorities..</li>
+                    <li>Add detailed notes to each task.</li>
+                </ul>
+            </div>
+            <div class="project-detail-section">
+                <h3>Technical Benefits</h3>
+                <ul>
+                    <li>Lightweight and efficient: Optimized for performance.</li>
+                    <li>Intuitive UI: Designed for effortless usability.</li>
+                    <li>Robust data handling: Ensures data safety and persistence.</li>
+                </ul>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/tasks.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://ragu-123.github.io/tasks/" target="_blank" class="btn btn-primary">
+                    <span>Download for Windows↗</span>
+                </a>
+    
+            </div>
+        </div>
+    </div>
+
+    <div class="project-modal" id="modal-Space-debris">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Space Debris Tracking</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">October 2024</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Object detection and Tracking</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    This project demonstrates a space debris tracking system using YOLOv5 for object detection and a Kalman Filter to predict and track the debris's trajectory in real time.
+                </p>
+            </div>
+
+            <div class="project-detail-section">
+                <h3>Project Overview</h3>
+                <p>The system processes video frames to detect space debris, predict its future position, and visualize the trajectory. 
+                    It uses YOLOv5 for real-time object detection and a Kalman Filter for trajectory prediction.</p>
+            </div>
+        
+             <div class="project-detail-section">
+                <h3>Features</h3>
+                <ul>
+                    <li>Real-Time Detection: YOLOv5 detects debris in video frames. Kalman Filter </li>
+                    <li>Prediction: Predicts the debris's future position based on previous frame positions. </li>
+                    <li>Visual Tracking: Draws bounding boxes and predicted trajectory on each frame.</li>
+                    <li>Video Output: Saves a new video file with tracked debris and predictions.</li>
+                </ul>
+                     
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/space-debris-tracking-and-path-prediction.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-modal" id="modal-Audify">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Audify</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">October 2024</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Flask/python Html</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    Audify is a versatile music streaming app that combines the best of online streaming and offline playback. 
+                    With a sleek and responsive user interface, Audify offers music recommendations, playlist management, and seamless playback controls.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Music Streaming</h3>
+                <ul>
+                    <li>Search for music on YTube,Ytmusic.</li>
+                    <li>Stream music directly from YTube.</li>
+                    <li>Display related songs based on the current track.</li>
+                </ul>
+            </div>
+            <div class="project-detail-section">
+                <h3>Offline Playback</h3>
+                <ul>
+                    <li>Download songs for offline listening.</li>
+                    <li>Manage downloaded songs and playlists.</li>
+                    <li>Play music in the background while using other apps.</li>
+                </ul>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/audify.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://ragu-123.github.io/audify/" target="_blank" class="btn btn-primary">
+                    <span>Download for Windows↗</span>
+                </a>
+    
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div class="project-modal" id="modal-histopathology">
+        <div class="project-modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="project-detail-header">
+                <h1 class="project-detail-title">Histopathology Image Captioning</h1>
+                <div class="project-detail-meta">
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Date</span>
+                        <span class="project-meta-value">July 2025</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Type</span>
+                        <span class="project-meta-value">Image Captioning</span>
+                    </div>
+                    <div class="project-meta-item">
+                        <span class="project-meta-label">Status</span>
+                        <span class="project-meta-value">Complete</span>
+                    </div>
+                </div>
+                <p class="project-detail-description">
+                    This model is a fine-tuned version of Salesforce/blip-image-captioning-base on a histopathology image dataset, trained to automatically generate captions for digital pathology slides. 
+                    It achieved an average loss of 0.0098 on the training set.
+                </p>
+            </div>
+            <div class="project-detail-section">
+                <h3>Model Training & Evaluation</h3>
+                <p>Trained the BLIP model on a high-performance GPU cluster with mixed precision, using a custom dataset of histopathology images.</p>
+            </div>
+
+             <div class="project-detail-section">
+                <h3>Training Details</h3>
+                <ul>
+                    <li>Dataset: Histopathology images with corresponding captions</li>
+                    <li>Epochs: 10</li>
+                    <li>Base Model: Salesforce/blip-image-captioning-base</li>
+                    <li>Batch Size: 4</li>
+                    <li>Learning Rate: 5e-5</li>
+                    <li>Gradient Accumulation: 2</li>
+                </ul>
+            </div>
+            
+            <div class="project-actions">
+                <a href="https://github.com/Ragu-123/Blip-histopathology.git" target="_blank" class="btn btn-primary">
+                    <span>GitHub↗</span>
+                </a>
+                <a href="https://huggingface.co/ragunath-ravi/blip-histopathology-finetuned" target="_blank" class="btn btn-primary">
+                    <span>HuggingFace↗</span>
+                </a>
+                <a href="https://huggingface.co/spaces/ragunath-ravi/blip-histopathology" target="_blank" class="btn btn-primary">
+                    <span>Demo↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript for functionality -->
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Navigation
+    const navLinks = document.querySelectorAll('.nav-link, .btn[data-page]'); // Add btn selector
+    const pages = document.querySelectorAll('.page');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetPage = link.getAttribute('data-page');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector(`.nav-link[data-page="${targetPage}"]`).classList.add('active');
+            
+            // Show target page
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(targetPage).classList.add('active');
+            
+            // Scroll to top of the page
+            window.scrollTo(0, 0);
         });
-    </script>
+    });
+    
+    // Project Modal Handling
+    const projectCards = document.querySelectorAll('.project-card');
+    const modals = document.querySelectorAll('.project-modal');
+    const closeButtons = document.querySelectorAll('.modal-close');
+    
+    projectCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const modalId = 'modal-' + card.getAttribute('data-project');
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.project-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+    });
+    
+    // Close modal on outside click
+    modals.forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+    
+    // Handle Know More button clicks
+    document.querySelectorAll('.know-more').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = btn.closest('.project-card');
+            const modalId = 'modal-' + card.getAttribute('data-project');
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+});
+</script>
 </body>
 </html>
