@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ragunath R - Portfolio</title>
+    <title>Ragunath R - AI Engineer</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
         
@@ -119,15 +119,48 @@
         .hero {
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Adjusted for image */
             min-height: calc(100vh - 80px);
             position: relative;
+            gap: 40px; /* Space between text and image */
         }
         
         .hero-content {
-            width: 100%;
+            flex: 1; /* Allow content to take available space */
             max-width: 800px;
         }
-        
+
+        /* STYLES FOR HERO IMAGE START */
+        .hero-image-container {
+            flex-shrink: 0; /* Prevent image from shrinking */
+            width: 400px; /* Adjust size as needed */
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* UPDATED: This creates the modern fluid "blob" shape */
+            border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+            filter: grayscale(100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease-in-out; /* Adjusted transition for smoother shape morphing on hover if needed */
+        }
+
+        .hero-image:hover {
+            transform: translateY(-10px) scale(1.03);
+            filter: grayscale(10%);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.7);
+            /* Optional: morph the shape slightly on hover */
+            border-radius: 37% 63% 46% 54% / 48% 55% 45% 52%;
+        }
+        /* STYLES FOR HERO IMAGE END */
+
         .hero-title {
             font-size: clamp(48px, 8vw, 120px);
             font-weight: 200;
@@ -548,6 +581,29 @@
         }
         
         /* Responsive */
+        @media (max-width: 992px) { /* Adjusted breakpoint for better image handling */
+            .hero {
+                flex-direction: column-reverse; /* Stack image above text */
+                text-align: center;
+                justify-content: center;
+                padding-top: 40px; /* Add padding */
+            }
+
+            .hero-content {
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-image-container {
+                width: 280px;
+                height: 280px;
+                margin-bottom: 40px;
+            }
+        }
+
+
         @media (max-width: 768px) {
             .nav-content {
                 padding: 16px 20px;
@@ -644,7 +700,6 @@
     <div class="dot-grid"></div>
     
     <div class="main-container">
-        <!-- Navigation -->
         <nav class="nav">
             <div class="nav-content">
                 <div class="logo">Ragunath R</div>
@@ -658,7 +713,6 @@
             </div>
         </nav>
         
-        <!-- Home Page -->
         <div class="page active" id="home">
             <div class="page-content">
                 <div class="hero">
@@ -673,16 +727,17 @@
                             experience through challenging projects while driving impactful advancements in these fields.
                         </p>
                         <div class="hero-actions">
-                            <!-- Update data-page attribute for navigation -->
                             <a href="#" class="btn btn-primary" data-page="projects">View Projects</a>
                             <a href="#" class="btn btn-secondary" data-page="contact">Get in Touch</a>
                         </div>
                     </div>
-                </div>
+                    <div class="hero-image-container">
+                        <img src="pic1.png" alt="Ragunath R" class="hero-image">
+                    </div>
+                    </div>
             </div>
         </div>
         
-        <!-- About Page -->
         <div class="page" id="about">
             <div class="page-content">
                 <div class="section-header">
@@ -739,7 +794,6 @@
             </div>
         </div>
         
-        <!-- Projects Page -->
         <div class="page" id="projects">
             <div class="page-content">
                 <div class="section-header">
@@ -867,7 +921,6 @@
             </div>
         </div>
         
-        <!-- Skills Page -->
         <div class="page" id="skills">
             <div class="page-content">
                 <div class="section-header">
@@ -944,7 +997,6 @@
             </div>
         </div>
         
-        <!-- Contact Page -->
         <div class="page" id="contact">
             <div class="page-content">
                 <div class="section-header">
@@ -990,7 +1042,6 @@
             </div>
         </div>
 
-        <!-- Certifications Page -->
         <div class="page" id="certifications">
             <div class="page-content">
                 <div class="section-header">
@@ -1012,7 +1063,6 @@
         </div>
     </div>
     
-    <!-- Project Modals -->
     <div class="project-modal" id="modal-docagent">
         <div class="project-modal-content">
             <button class="modal-close">&times;</button>
@@ -1021,7 +1071,7 @@
                 <div class="project-detail-meta">
                     <div class="project-meta-item">
                         <span class="project-meta-label">Date</span>
-                        <span class="project-meta-value">August 2024</span>
+                        <span class="project-meta-value">August 2025</span>
                     </div>
                     <div class="project-meta-item">
                         <span class="project-meta-label">Type</span>
@@ -1430,7 +1480,6 @@
         </div>
     </div>
     
-    <!-- JavaScript for functionality -->
     <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Navigation
