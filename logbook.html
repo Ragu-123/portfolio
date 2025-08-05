@@ -55,8 +55,7 @@
         }
         
         .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -102,16 +101,14 @@
             transform: translateY(-1px);
         }
         
-        /* Hero Section */
+        /* Hero Section - Full Width */
         .hero {
-            padding: 120px 0 80px;
+            padding: 120px 40px 80px;
             text-align: center;
         }
         
         .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 40px;
+            width: 100%;
         }
         
         .hero-title {
@@ -136,21 +133,24 @@
             font-weight: 300;
             color: rgba(255,255,255,0.5);
             line-height: 1.6;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto 40px;
         }
         
-        /* Stats Section */
+        /* Stats Section - Full Width */
         .stats {
             display: flex;
             justify-content: center;
             gap: 60px;
             margin: 60px 0;
             flex-wrap: wrap;
+            padding: 0 40px;
         }
         
         .stat-item {
             text-align: center;
+            flex: 1;
+            min-width: 120px;
         }
         
         .stat-number {
@@ -170,15 +170,18 @@
             margin-top: 8px;
         }
         
-        /* Search */
+        /* Search - Full Width */
         .search-container {
-            max-width: 900px;
-            margin: 0 auto 40px;
+            width: 100%;
+            margin: 0 0 40px;
             padding: 0 40px;
         }
         
         .search-box {
             width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            display: block;
             padding: 16px 20px;
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.1);
@@ -205,6 +208,7 @@
             gap: 8px;
             margin: 80px 0 60px;
             flex-wrap: wrap;
+            padding: 0 40px;
         }
         
         .filter-tab {
@@ -226,11 +230,13 @@
             color: #fff;
         }
         
-        /* Activity Feed */
+        /* Activity Feed - Full Width Grid Layout */
         .activity-feed {
-            max-width: 900px;
-            margin: 0 auto;
+            width: 100%;
             padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
         }
         
         .activity-item {
@@ -238,8 +244,8 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
             padding: 32px;
-            margin-bottom: 24px;
             transition: all 0.3s ease;
+            height: fit-content;
         }
         
         .activity-item:hover {
@@ -259,6 +265,7 @@
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-wrap: wrap;
         }
         
         .activity-date {
@@ -287,7 +294,7 @@
         .category-update { background: rgba(0, 150, 255, 0.2); color: rgba(0, 150, 255, 1); }
         
         .activity-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 500;
             color: #fff;
             margin-bottom: 12px;
@@ -296,7 +303,7 @@
         }
         
         .activity-description {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 300;
             color: rgba(255,255,255,0.7);
             line-height: 1.6;
@@ -324,10 +331,11 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
         
         .activity-link {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 400;
             color: rgba(255,255,255,0.6);
             text-decoration: none;
@@ -347,6 +355,7 @@
         .load-more {
             text-align: center;
             margin: 60px 0;
+            padding: 0 40px;
         }
         
         .btn-secondary {
@@ -360,53 +369,9 @@
             border-color: rgba(255,255,255,0.3);
         }
         
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-content {
-                padding: 16px 20px;
-            }
-            
-            .hero-content {
-                padding: 0 20px;
-            }
-            
-            .activity-feed {
-                padding: 0 20px;
-            }
-            
-            .search-container {
-                padding: 0 20px;
-            }
-            
-            .stats {
-                gap: 30px;
-            }
-            
-            .activity-item {
-                padding: 24px;
-            }
-            
-            .activity-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-        }
-        
-        /* Smooth animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-        
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
         /* Empty State */
         .empty-state {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 80px 20px;
             color: rgba(255,255,255,0.4);
@@ -429,6 +394,133 @@
             font-size: 14px;
             font-weight: 300;
             line-height: 1.5;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .activity-feed {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-content {
+                padding: 16px 20px;
+            }
+            
+            .hero {
+                padding: 100px 20px 60px;
+            }
+            
+            .activity-feed {
+                padding: 0 20px;
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .search-container {
+                padding: 0 20px;
+            }
+            
+            .filter-tabs {
+                padding: 0 20px;
+            }
+            
+            .stats {
+                gap: 30px;
+                padding: 0 20px;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+            }
+            
+            .activity-item {
+                padding: 24px;
+            }
+            
+            .activity-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .load-more {
+                padding: 0 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .filter-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-tab {
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+        }
+        
+        /* Large screens optimization */
+        @media (min-width: 1400px) {
+            .activity-feed {
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+                gap: 32px;
+            }
+            
+            .activity-item {
+                padding: 40px;
+            }
+        }
+        
+        /* Ultra-wide screens */
+        @media (min-width: 1800px) {
+            .activity-feed {
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            }
+            
+            .nav-content {
+                padding: 20px 60px;
+            }
+            
+            .hero {
+                padding: 120px 60px 80px;
+            }
+            
+            .search-container {
+                padding: 0 60px;
+            }
+            
+            .filter-tabs {
+                padding: 0 60px;
+            }
+            
+            .activity-feed {
+                padding: 0 60px;
+            }
+            
+            .load-more {
+                padding: 0 60px;
+            }
+        }
+        
+        /* Smooth animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
@@ -579,7 +671,7 @@
                 this.activities = activities;
                 this.filteredActivities = [...this.activities];
                 this.currentFilter = 'all';
-                this.itemsPerPage = 6;
+                this.itemsPerPage = 12; // Increased for grid layout
                 this.currentPage = 1;
                 
                 this.init();
