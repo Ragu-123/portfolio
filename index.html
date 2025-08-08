@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ragunath R - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap');
         
@@ -316,6 +317,7 @@
         .project-card:hover {
             border-color: rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.04);
+            transform: translateY(-5px);
         }
         
         .project-header {
@@ -356,6 +358,11 @@
         .project-arrow {
             color: rgba(255,255,255,0.4);
             font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-arrow {
+            transform: translateX(5px);
         }
         
         /* Project Detail Modal */
@@ -370,6 +377,7 @@
             z-index: 2000;
             display: none;
             overflow-y: auto;
+            animation: fadeIn 0.3s ease;
         }
         
         .project-modal.active {
@@ -512,6 +520,13 @@
             border: 1px solid rgba(255,255,255,0.06);
             border-radius: 12px;
             padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .skill-category:hover {
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            transform: translateY(-5px);
         }
         
         .skill-category h3 {
@@ -560,6 +575,7 @@
         .contact-card:hover {
             border-color: rgba(255,255,255,0.12);
             background: rgba(255,255,255,0.04);
+            transform: translateY(-5px);
         }
         
         .contact-icon {
@@ -652,16 +668,45 @@
             }
         }
         
-        /* Smooth animations */
-        .fade-in {
+        /* --- NEW: Scroll Animation System --- */
+        .animate-on-scroll {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition-delay: var(--animation-delay, 0s);
         }
-        
-        .fade-in.visible {
+
+        .animate-on-scroll.is-visible {
             opacity: 1;
             transform: translateY(0);
+        }
+        
+        /* Pixar-style AI Engineer animation */
+        .hero-title span {
+            display: inline-block;
+            opacity: 0;
+            transform: scale(0.8) rotate(-10deg);
+            animation: letterPop 0.6s forwards;
+        }
+
+        @keyframes letterPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotate(-10deg);
+            }
+            60% {
+                opacity: 1;
+                transform: scale(1.1) rotate(5deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-actions {
@@ -705,14 +750,13 @@
     <div class="main-container">
         <nav class="nav">
             <div class="nav-content">
-                <div class="logo">RAGUNATH R</div>
+                <div class="logo animate__animated animate__fadeInLeft">RAGUNATH R</div>
                 <ul class="nav-menu">
                     <li class="nav-item"><a href="#" class="nav-link active" data-page="home">Home</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-page="about">About</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-page="projects">Projects</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-page="skills">Skills</a></li>
                     <li class="nav-item"><a href="#" class="nav-link" data-page="contact">Contact</a></li>
-                   
                 </ul>
             </div>
         </nav>
@@ -721,37 +765,37 @@
             <div class="page-content">
                 <div class="hero">
                     <div class="hero-content">
-                        <p class ="hero-subtitle">Aspiring</p>
-                        <h1 class="hero-title">AI Engineer</h1>
-                        <p class="hero-subtitle">Machine Learning • Natural Language Processing • Computer Vision</p>
-                        <p class="hero-description">
+                        <p class="hero-subtitle animate__animated animate__fadeInDown">Aspiring</p>
+                        <h1 class="hero-title" id="ai-title"></h1>
+                        <p class="hero-subtitle animate__animated animate__fadeIn" style="animation-delay: 1s;">Machine Learning • Natural Language Processing • Computer Vision</p>
+                        <p class="hero-description animate__animated animate__fadeInUp" style="animation-delay: 1.2s;">
                             Aspiring AI Engineer and a recent graduate with a strong passion for artificial intelligence, 
                             machine learning, natural language processing, and computer vision. Eager to contribute to 
                             industrial applications of AI, explore innovative solutions in NLP and CV, and gain hands-on 
                             experience through challenging projects while driving impactful advancements in these fields.
                         </p>
                         <div class="hero-actions">
-                            <a href="#" class="btn btn-primary" data-page="projects">View Projects</a>
-                            <a href="#" class="btn btn-secondary" data-page="contact">Get in Touch</a>
-                            <a href="logbook.html" class="btn btn-secondary">Logbook↗</a>
+                            <a href="#" class="btn btn-primary animate__animated animate__fadeInUp" style="animation-delay: 1.4s;" data-page="projects">View Projects</a>
+                            <a href="#" class="btn btn-secondary animate__animated animate__fadeInUp" style="animation-delay: 1.5s;" data-page="contact">Get in Touch</a>
+                            <a href="logbook.html" class="btn btn-secondary animate__animated animate__fadeInUp" style="animation-delay: 1.6s;">Logbook↗</a>
                         </div>
                     </div>
-                    <div class="hero-image-container">
+                    <div class="hero-image-container animate__animated animate__zoomIn">
                         <img src="pic1.png" alt="Ragunath R" class="hero-image">
                     </div>
-                    </div>
+                </div>
             </div>
         </div>
         
         <div class="page" id="about">
             <div class="page-content">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h2 class="section-title">About</h2>
                     <p class="section-subtitle">AI Engineering Student & Research Enthusiast</p>
                 </div>
                 
                 <div class="about-grid">
-                    <div class="about-item">
+                    <div class="about-item animate-on-scroll">
                         <h3>Education</h3>
                         <p><span class="highlight">B.Tech Artificial Intelligence and Machine Learning</span><br>
                         Saveetha Engineering College, Chennai<br>
@@ -766,7 +810,7 @@
                         Grade: 98.8% (2020)</p>
                     </div>
                     
-                    <div class="about-item">
+                    <div class="about-item animate-on-scroll">
                         <h3>Experience & Achievements</h3>
                         <p><span class="highlight">AI Engineer Intern</span><br>
                         Built facial recognition system using Vision Transformer achieving 96% accuracy. 
@@ -778,36 +822,36 @@
                         • IBM Datathon Participant - ML and Computer Vision solutions<br>
                         • Koselay Award recipient for outstanding academic performance</p>
                     </div>
-                </div>
                 
-                <div class="about-item">
-                    <h3>Research Interests</h3>
-                    <p>My work focuses on the intersection of natural language processing and computer vision, 
-                    with particular interest in multimodal AI systems, retrieval-augmented generation, 
-                    and domain-specific language models. I'm passionate about making AI more accessible 
-                    through regional language support and medical AI applications.</p>
-                </div>
+                    <div class="about-item animate-on-scroll">
+                        <h3>Research Interests</h3>
+                        <p>My work focuses on the intersection of natural language processing and computer vision, 
+                        with particular interest in multimodal AI systems, retrieval-augmented generation, 
+                        and domain-specific language models. I'm passionate about making AI more accessible 
+                        through regional language support and medical AI applications.</p>
+                    </div>
 
-                <div class="about-item">
-                    <h3>Certifications</h3>
-                    <p>• Machine Translation (Coursera)<br>
-                       • Exploratory Data Analysis for Machine Learning(coursera)<br>
-                       • LangChain Chat with Your Data(coursera)<br>
-                       • Supervised Machine Learning: Classification(coursera)<br>
-                    </p>
+                    <div class="about-item animate-on-scroll">
+                        <h3>Certifications</h3>
+                        <p>• Machine Translation (Coursera)<br>
+                           • Exploratory Data Analysis for Machine Learning(coursera)<br>
+                           • LangChain Chat with Your Data(coursera)<br>
+                           • Supervised Machine Learning: Classification(coursera)<br>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="page" id="projects">
             <div class="page-content">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h2 class="section-title">Projects</h2>
                     <p class="section-subtitle">Featured AI & Machine Learning Projects</p>
                 </div>
                 
                 <div class="projects-grid">
-                    <div class="project-card" data-project="docagent">
+                    <div class="project-card animate-on-scroll" data-project="docagent">
                         <div class="project-header">
                             <h3 class="project-title">DocAgent</h3>
                             <p class="project-summary">Agentic RAG-powered multi-format document QA system with specialized agents</p>
@@ -821,7 +865,7 @@
                         </div>
                     </div>
                     
-                    <div class="project-card" data-project="tamil-asr">
+                    <div class="project-card animate-on-scroll" data-project="tamil-asr">
                         <div class="project-header">
                             <h3 class="project-title">Tamil Speech-to-Text ASR</h3>
                             <p class="project-summary">Fine-tuned Whisper model for Tamil automatic speech recognition</p>
@@ -835,7 +879,7 @@
                         </div>
                     </div>
                     
-                    <div class="project-card" data-project="histopathology">
+                    <div class="project-card animate-on-scroll" data-project="histopathology">
                         <div class="project-header">
                             <h3 class="project-title">Histopathology Image Captioning</h3>
                             <p class="project-summary">Medical image captioning model using fine-tuned BLIP architecture</p>
@@ -849,7 +893,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card" data-project="tamil-voice-corpus">
+                    <div class="project-card animate-on-scroll" data-project="tamil-voice-corpus">
                         <div class="project-header">
                             <h3 class="project-title">TamilVoiceCorpus-Dataset</h3>
                             <p class="project-summary">A large-scale Tamil Conversational ASR dataset by crawling and curating speech data from various public online sources</p>
@@ -863,9 +907,7 @@
                         </div>
                     </div>
 
-                    
-
-                    <div class="project-card" data-project="COT">
+                    <div class="project-card animate-on-scroll" data-project="COT">
                         <div class="project-header">
                             <h3 class="project-title">Chain-of-Thought(Math)-Dataset</h3>
                             <p class="project-summary">This dataset is a preprocessed and filtered subset of the NVIDIA Open Math Reasoning Dataset, focused on the Chain-of-Thought (CoT) reasoning split. It has been adapted fine-tuning, such as LLaMA and similar architectures.</p>
@@ -879,7 +921,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card" data-project="Space-debris">
+                    <div class="project-card animate-on-scroll" data-project="Space-debris">
                         <div class="project-header">
                             <h3 class="project-title">Space Debris Tracking</h3>
                             <p class="project-summary">This project demonstrates a space debris tracking system using YOLOv5 for object detection and a Kalman Filter to predict and track the debris's trajectory in real time.</p>
@@ -893,7 +935,7 @@
                         </div>
                     </div>
                    
-                    <div class="project-card" data-project="Audify">
+                    <div class="project-card animate-on-scroll" data-project="Audify">
                         <div class="project-header">
                             <h3 class="project-title">Audify</h3>
                             <p class="project-summary">Audify is a versatile music streaming app that combines the best of online streaming and offline playback. With a sleek and responsive user interface.</p>
@@ -907,7 +949,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card" data-project="Tasks">
+                    <div class="project-card animate-on-scroll" data-project="Tasks">
                         <div class="project-header">
                             <h3 class="project-title">Tasks</h3>
                             <p class="project-summary">Tasks App is a lightweight, powerful, and user-friendly task management tool designed to help individuals and teams organize their tasks efficiently.</p>
@@ -920,21 +962,19 @@
                             <a href="#" class="btn btn-primary know-more">Know More</a>
                         </div>
                     </div>
-                    
-
                 </div>
             </div>
         </div>
         
         <div class="page" id="skills">
             <div class="page-content">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h2 class="section-title">Skills</h2>
                     <p class="section-subtitle">Technical Expertise & Tools</p>
                 </div>
                 
                 <div class="skills-grid">
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Programming Languages</h3>
                         <ul class="skill-list">
                             <li>Python (Advanced)</li>
@@ -944,7 +984,7 @@
                         </ul>
                     </div>
                     
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>AI/ML Frameworks</h3>
                         <ul class="skill-list">
                             <li>PyTorch</li>
@@ -955,7 +995,7 @@
                         </ul>
                     </div>
                     
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Deep Learning & NLP</h3>
                         <ul class="skill-list">
                             <li>Large Language Models</li>
@@ -966,7 +1006,7 @@
                         </ul>
                     </div>
                     
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Tools & Platforms</h3>
                         <ul class="skill-list">
                             <li>AWS (S3, EC2)</li>
@@ -977,7 +1017,7 @@
                         </ul>
                     </div>
                     
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Specialized Skills</h3>
                         <ul class="skill-list">
                             <li>Prompt Engineering</li>
@@ -988,7 +1028,7 @@
                         </ul>
                     </div>
                     
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Soft Skills</h3>
                         <ul class="skill-list">
                             <li>Problem Solving</li>
@@ -1004,49 +1044,49 @@
         
         <div class="page" id="contact">
             <div class="page-content">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h2 class="section-title">Contact/Connect with Me</h2>
                     <p class="section-subtitle">Let's build something amazing together</p>
                 </div>
                 
                 <div class="contact-grid">
-                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ragunathravi73@gmail.com" class="contact-card">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ragunathravi73@gmail.com" class="contact-card animate-on-scroll">
                         <span class="contact-icon">✉</span>
                         <h3>Email</h3>
                         <p>ragunathravi73@gmail.com</p>
                     </a>
                     
-                    <a href="https://wa.me/917825078508" class="contact-card">
+                    <a href="https://wa.me/917825078508" class="contact-card animate-on-scroll">
                         <span class="contact-icon">(✆)</span>
                         <h3>Whatsapp</h3>
                         <p>+91 7825078508</p>
                     </a>
 
-                    <a href="https://www.linkedin.com/in/ragunath-r-a2a580247/" target="_blank" class="contact-card">
+                    <a href="https://www.linkedin.com/in/ragunath-r-a2a580247/" target="_blank" class="contact-card animate-on-scroll">
                         <span class="contact-icon">[in]</span>
                         <h3>LinkedIn</h3>
                         <p>Professional Network</p>
                     </a>
 
-                    <a href="https://drive.google.com/file/d/1QDOGeGut5QTdZYIPwNTonxjFnXWFeuTq/view?usp=sharing" target="_blank" class="contact-card">
+                    <a href="https://drive.google.com/file/d/1QDOGeGut5QTdZYIPwNTonxjFnXWFeuTq/view?usp=sharing" target="_blank" class="contact-card animate-on-scroll">
                         <span class="contact-icon">[R]</span>
                         <h3>Resume</h3>
                         <p>view/download</p>
                     </a>
-                    <a href="https://github.com/Ragu-123" target="_blank" class="contact-card">
+                    <a href="https://github.com/Ragu-123" target="_blank" class="contact-card animate-on-scroll">
                         <span class="contact-icon">{^_^}</span>
                         <h3>GitHub</h3>
                         <p>Code Repository</p>
                     </a>
                     
-                    <a href="https://huggingface.co/ragunath-ravi" target="_blank" class="contact-card">
+                    <a href="https://huggingface.co/ragunath-ravi" target="_blank" class="contact-card animate-on-scroll">
                         <span class="contact-icon">\_(ツ)_/</span>
                         <h3>HuggingFace</h3>
                         <p>AI Models & Datasets</p>
                     </a>
                 </div>
                 
-                <div style="text-align: center; margin-top: 60px; color: rgba(255,255,255,0.4);">
+                <div class="animate-on-scroll" style="text-align: center; margin-top: 60px; color: rgba(255,255,255,0.4);">
                     <p>🏠︎ Chennai, Tamil Nadu, India • ☏ +91 7825078508</p>
                     <p style="margin-top: 16px; font-size: 14px;">Languages: Tamil, English, Telugu</p>
                 </div>
@@ -1055,13 +1095,13 @@
 
         <div class="page" id="certifications">
             <div class="page-content">
-                <div class="section-header">
+                <div class="section-header animate-on-scroll">
                     <h2 class="section-title">Certifications</h2>
                     <p class="section-subtitle">Professional Development & Learning</p>
                 </div>
                 
                 <div class="skills-grid">
-                    <div class="skill-category">
+                    <div class="skill-category animate-on-scroll">
                         <h3>Coursera Certifications</h3>
                         <ul class="skill-list">
                             <li>Machine Translation (January 2025)</li>
@@ -1434,8 +1474,6 @@
         </div>
     </div>
 
-    
-
     <div class="project-modal" id="modal-histopathology">
         <div class="project-modal-content">
             <button class="modal-close">&times;</button>
@@ -1493,7 +1531,7 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Select all potential navigation links
+            // --- Navigation Link Handling ---
             const navLinks = document.querySelectorAll('.nav-link, .btn');
             const pages = document.querySelectorAll('.page');
             
@@ -1502,37 +1540,30 @@
                     const href = link.getAttribute('href');
                     const targetPageId = link.getAttribute('data-page');
 
-                    // If the link is meant to open in a new tab or is an absolute/external URL,
-                    // let the browser handle it by doing nothing.
                     if (link.target === '_blank' || (href && !href.startsWith('#'))) {
                         return;
                     }
 
-                    // For internal, single-page navigation, prevent the default action.
                     e.preventDefault();
 
-                    // Ensure there's a target page ID and it exists in the document.
                     if (!targetPageId || !document.getElementById(targetPageId)) {
                         return;
                     }
                     
-                    // Update navigation active state
                     document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                     const correspondingNavLink = document.querySelector(`.nav-link[data-page="${targetPageId}"]`);
                     if (correspondingNavLink) {
                         correspondingNavLink.classList.add('active');
                     }
                     
-                    // Show target page
                     pages.forEach(page => page.classList.remove('active'));
                     document.getElementById(targetPageId).classList.add('active');
                     
-                    // Scroll to top of the page
                     window.scrollTo(0, 0);
                 });
             });
             
-            // Project Modal Handling
+            // --- Project Modal Handling ---
             const projectCards = document.querySelectorAll('.project-card');
             const modals = document.querySelectorAll('.project-modal');
             const closeButtons = document.querySelectorAll('.modal-close');
@@ -1555,7 +1586,6 @@
                 });
             });
             
-            // Close modal on outside click
             modals.forEach(modal => {
                 modal.addEventListener('click', (e) => {
                     if (e.target === modal) {
@@ -1565,7 +1595,6 @@
                 });
             });
             
-            // Handle Know More button clicks
             document.querySelectorAll('.know-more').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -1579,6 +1608,52 @@
                     }
                 });
             });
+
+            // --- Pixar-like Text Animation ---
+            const title = "AI Engineer";
+            const titleContainer = document.getElementById("ai-title");
+            if (titleContainer) {
+                let delay = 0;
+                title.split("").forEach(letter => {
+                    const span = document.createElement("span");
+                    span.textContent = letter === ' ' ? '\u00A0' : letter;
+                    span.style.animationDelay = `${delay}s`;
+                    titleContainer.appendChild(span);
+                    delay += 0.1;
+                });
+            }
+            
+            // --- NEW: Navigation Animation on Load ---
+            const navItems = document.querySelectorAll('.nav-menu .nav-item');
+            navItems.forEach((item, index) => {
+                item.classList.add('animate__animated', 'animate__fadeInDown');
+                item.style.animationDelay = `${0.2 * (index + 1)}s`;
+            });
+
+            // --- NEW: Scroll-triggered Animations ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Animate only once
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            // Set up staggered delays for grid/list items
+            const animatedContainers = document.querySelectorAll('.projects-grid, .skills-grid, .contact-grid, .about-grid');
+            animatedContainers.forEach(container => {
+                const items = container.querySelectorAll('.animate-on-scroll');
+                items.forEach((item, index) => {
+                    item.style.setProperty('--animation-delay', `${index * 100}ms`);
+                });
+            });
+
+            // Observe all elements with the class
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => observer.observe(el));
         });
     </script>
 </body>
