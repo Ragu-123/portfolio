@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ragunath R - Terminal Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --primary: #00ff9f;
+            --secondary: #ff006e;
+            --neutral: #b5b5b5;
+            --white: #ffffff;
+            --prompt: #ffbe0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--bg-color);
+            color: var(--primary);
+            overflow: hidden;
+        }
+
+        /* The main terminal window */
+        #terminal {
+            height: 100vh;
+            width: 100%;
+            padding: 15px;
+            overflow-y: scroll;
+            cursor: text;
+        }
+
+        /* The container for all command outputs */
+        #output {
+            width: 100%;
+        }
+
+        /* Styles for output content */
+        .output-content {
+            padding-left: 10px;
+            color: var(--neutral);
+            line-height: 1.6;
+        }
+
+        .output-content h3 {
+            color: var(--primary);
+            font-size: 1.2em;
+            margin-top: 1em;
+            margin-bottom: 0.5em;
+        }
+        
+        .output-content h3::before {
+            content: ">> ";
+        }
+
+        .output-content ul {
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        .output-content li {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        /* Style for list items */
+        .output-content li::before {
+            content: "*";
+            color: var(--secondary);
+            position: absolute;
+            left: -15px;
+        }
+
+        .output-content a {
+            color: var(--primary);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--primary);
+        }
+
+        .output-content a:hover {
+            color: var(--bg-color);
+            background: var(--primary);
+        }
+
+        /* Style for the echoed command */
+        .command-echo {
+            color: var(--white);
+        }
+        
+        /* The prompt line (e.g., user@host:~$ ) */
+        .prompt {
+            color: var(--prompt);
+            font-weight: 700;
+        }
+
+        /* The current input line */
+        #input-line {
+            display: flex;
+            width: 100%;
+        }
+
+        #command-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--white);
+            font-family: 'Space Mono', monospace;
+            font-size: 1em;
+            caret-color: var(--primary);
+        }
+        
+        /* The blinking cursor */
+        #cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2em;
+            background: var(--primary);
+            animation: blink 1s step-end infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        /* Special colors */
+        .error {
+            color: var(--secondary);
+        }
+        .success {
+            color: var(--primary);
+        }
+        .filename {
+            color: var(--primary);
+            margin-right: 15px;
+        }
+        .directory {
+            color: var(--prompt);
+            font-weight: bold;
+        }
+
+        /* Skill bar styles */
+        .skill-bar {
+            display: inline-block;
+            color: var(--primary);
+        }
+        .skill-name {
+            display: inline-block;
+            width: 200px; /* Aligns the bars */
+            color: var(--neutral);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal">
+        <div id="output"></div>
+        <div id="input-line">
+            <span id="prompt" class="prompt">ragu@portfolio:~$ </span>
+            <input type="text" id="command-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" autofocus>
+            <span id="cursor"></span>
+        </div>
+    </div>
+    
+    <script>
+        class TerminalApp {
+            constructor() {
+                this.terminal = document.getElementById('terminal');
+                this.output = document.getElementById('output');
+                this.input = document.getElementById('command-input');
+                this.prompt = document.getElementById('prompt');
+                this.cursor = document.getElementById('cursor');
+
+                this.projectsData = [
+                    {
+                        title: 'DocAgent',
+                        summary: 'Agentic RAG-powered multi-format document QA system with specialized agents',
+                        tech: 'LangChain • RAG • Llama 3.1',
+                        links: [
+                            { name: 'GitHub', url: 'https://github.com/Ragu-123/docagent' },
+                            { name: 'Demo', url: 'https://huggingface.co/spaces/ragunath-ravi/DocAgent' }
+                        ]
+                    },
+                    {
+                        title: 'Tamil Speech-to-Text ASR',
+                        summary: 'Fine-tuned Whisper model for Tamil automatic speech recognition',
+                        tech: 'OpenAI Whisper • PyTorch • HuggingFace',
+                        links: [
+                            { name: 'GitHub', url: 'https://github.com/Ragu-123/whisper-mini-ta.git' },
+                            { name: 'Demo', url: 'https://huggingface.co/spaces/ragunath-ravi/whisper-tamil' }
+                        ]
+                    },
+                    {
+                        title: 'Histopathology Image Captioning',
+                        summary: 'Medical image captioning model using fine-tuned BLIP architecture',
+                        tech: 'BLIP • Medical AI • Computer Vision',
+                        links: [
+                            { name: 'GitHub', url: 'https://github.com/Ragu-123/Blip-histopathology.git' },
+                            { name: 'Demo', url: 'https://huggingface.co/spaces/ragunath-ravi/blip-histopathology' }
+                        ]
+                    },
+                    {
+                        title: 'TamilVoiceCorpus-Dataset',
+                        summary: 'A large-scale Tamil Conversational ASR dataset (15,000+ samples)',
+                        tech: 'Datasets • Web Scraping • HuggingFace',
+                        links: [
+                            { name: 'Dataset', url: 'https://huggingface.co/datasets/ragunath-ravi/TamilVoiceCorpus' }
+                        ]
+                    },
+                    {
+                        title: 'Space Debris Tracking',
+                        summary: 'Real-time object detection (YOLOv5) and trajectory prediction (Kalman Filter)',
+                        tech: 'YOLOv5 • Kalman Filter • Object Detection',
+                        links: [
+                            { name: 'GitHub', url: 'https://github.com/Ragu-123/space-debris-tracking-and-path-prediction.git' }
+                        ]
+                    }
+                ];
+
+                this.skillsData = {
+                    "AI/ML Frameworks": [
+                        { name: "PyTorch", level: 90 },
+                        { name: "Scikit-Learn", level: 95 },
+                        { name: "TensorFlow", level: 85 },
+                        { name: "HuggingFace", level: 92 }
+                    ],
+                    "Deep Learning & NLP": [
+                        { name: "Large Language Models", level: 90 },
+                        { name: "Computer Vision", level: 88 },
+                        { name: "RAG Systems", level: 90 },
+                        { name: "Fine-tuning", level: 93 }
+                    ],
+                    "Tools & Platforms": [
+                        { name: "AWS (S3, EC2)", level: 75 },
+                        { name: "Vector DBs (FAISS)", level: 85 },
+                        { name: "LangChain Agents", level: 88 },
+                        { name: "Git & GitHub", level: 90 }
+                    ],
+                    "Programming Languages": [
+                        { name: "Python", level: 98 },
+                        { name: "Java", level: 70 },
+                        { name: "C", level: 75 },
+                        { name: "HTML/CSS", level: 80 }
+                    ]
+                };
+
+                this.init();
+            }
+
+            init() {
+                this.input.addEventListener('keydown', (e) => this.onEnter(e));
+                this.terminal.addEventListener('click', () => this.input.focus());
+                this.boot();
+            }
+
+            async boot() {
+                this.toggleInput(false);
+                const bootSequence = [
+                    "Initializing kernel...",
+                    "Loading user profile: ragu-123",
+                    "Starting terminal session...",
+                    " ",
+                ];
+
+                for (const line of bootSequence) {
+                    this.printOutput(line);
+                    await this.sleep(100);
+                }
+                
+                this.runHelp(false); // Print help first time
+                this.toggleInput(true);
+            }
+
+            toggleInput(enable) {
+                this.input.disabled = !enable;
+                this.cursor.style.display = enable ? 'inline-block' : 'none';
+                if (enable) {
+                    this.input.focus();
+                }
+            }
+            
+            sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            onEnter(e) {
+                if (e.key === 'Enter') {
+                    const command = this.input.value;
+                    
+                    this.printCommand(command);
+                    this.handleCommand(command);
+                    
+                    this.input.value = "";
+                    this.scrollToBottom();
+                }
+            }
+
+            printCommand(command) {
+                this.output.innerHTML += `
+                    <p>
+                        <span class="prompt">${this.prompt.textContent}</span>
+                        <span class="command-echo">${command}</span>
+                    </p>
+                `;
+            }
+
+            printOutput(html) {
+                this.output.innerHTML += `<div class="output-content">${html}</div>`;
+            }
+            
+            scrollToBottom() {
+                this.terminal.scrollTop = this.terminal.scrollHeight;
+            }
+
+            handleCommand(command) {
+                const cmd = command.toLowerCase().trim();
+                
+                switch (cmd) {
+                    case 'python home.py':
+                    case 'home':
+                        this.runHome();
+                        break;
+                    
+                    case 'python projects.py':
+                    case 'projects':
+                        this.runProjects();
+                        break;
+                    
+                    case 'python skills.py':
+                    case 'skills':
+                        this.runSkills();
+                        break;
+                        
+                    case 'python contact.py':
+                    case 'contact':
+                        this.runContact();
+                        break;
+                    
+                    // --- NEW COMMANDS ---
+                    case 'python portfolio.py':
+                    case 'gui':
+                    case 'legacy':
+                        this.runLegacy();
+                        break;
+                    // --- END NEW COMMANDS ---
+
+                    case 'sh logbook.sh':
+                    case 'logbook':
+                        this.printOutput("Opening logbook in new tab...");
+                        window.open('logbook.html', '_blank');
+                        break;
+
+                    case 'help':
+                        this.runHelp(true);
+                        break;
+                    
+                    case 'clear':
+                        this.runClear();
+                        break;
+                    
+                    case 'whoami':
+                        this.printOutput("ragu-123: Ragunath R, Aspiring AI Engineer");
+                        break;
+
+                    case 'ls':
+                        this.printOutput(`
+                            <span class="filename">home.py</span>
+                            <span class="filename">projects.py</span>
+                            <span class="filename">skills.py</span>
+                            <span class="filename">contact.py</span>
+                            <span class="filename">logbook.sh</span>
+                            <span class="filename">portfolio.py</span>
+                        `);
+                        break;
+
+                    case '':
+                        break;
+
+                    default:
+                        this.printOutput(`<span class="error">command not found: ${command}</span><br>Type "help" for a list of commands.`);
+                }
+            }
+
+            runHome() {
+                const html = `
+                    <h3>About Me</h3>
+                    <p>
+                        Aspiring AI Engineer and a recent graduate with a strong passion for artificial intelligence, 
+                        machine learning, natural language processing, and computer vision. Eager to contribute to 
+                        industrial applications of AI, explore innovative solutions in NLP and CV, and gain hands-on 
+                        experience through challenging projects while driving impactful advancements in these fields.
+                    </p>
+                    
+                    <h3>Education</h3>
+                    <ul>
+                        <li><span class="success">B.Tech AI & ML</span> - Saveetha Engineering College (2022-2026)</li>
+                        <li><span class="success">Pre-University</span> - Kalaimagal Kalalaya Metric Hr. Sec. School (2022)</li>
+                    </ul>
+                    
+                    <h3>Experience</h3>
+                    <ul>
+                        <li><span class="success">AI Engineer Intern</span> - Built facial recognition system using Vision Transformer (96% accuracy). Enhanced model performance through data augmentation.</li>
+                        <li><span class="success">IIT Madras Shaastra</span> - Ranked top 50 among 200+ teams.</li>
+                    </ul>
+                `;
+                this.printOutput(html);
+            }
+
+            runProjects() {
+                let html = "<h3>Featured Projects</h3>";
+                html += "<ul>";
+                this.projectsData.forEach(p => {
+                    html += `
+                        <li>
+                            <span class="success">${p.title}</span> - ${p.summary}<br>
+                            <span style="color: var(--prompt);">&lt;${p.tech}&gt;</span><br>
+                            ${p.links.map(l => `[ <a href="${l.url}" target="_blank">${l.name}</a> ]`).join(' ')}
+                        </li>
+                    `;
+                });
+                html += "</ul>";
+                this.printOutput(html);
+            }
+
+            runSkills() {
+                let html = "<h3>Technical Skills</h3>";
+                for (const category in this.skillsData) {
+                    html += `<h4>${category}</h4>`;
+                    html += "<ul>";
+                    this.skillsData[category].forEach(skill => {
+                        html += `
+                            <li>
+                                <span class="skill-name">${skill.name}</span>
+                                <span class="skill-bar">${this.createProgressBar(skill.level)}</span>
+                            </li>
+                        `;
+                    });
+                    html += "</ul>";
+                }
+                this.printOutput(html);
+            }
+
+            createProgressBar(level) {
+                const totalChars = 20;
+                const filledChars = Math.round((level / 100) * totalChars);
+                const emptyChars = totalChars - filledChars;
+                return `[<span class="success">${'█'.repeat(filledChars)}</span>${'-'.repeat(emptyChars)}] ${level}%`;
+            }
+            
+            runContact() {
+                const html = `
+                    <h3>Contact & Connect</h3>
+                    <ul>
+                        <li><span class="success">Email</span>: <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ragunathravi73@gmail.com" target="_blank">ragunathravi73@gmail.com</a></li>
+                        <li><span class="success">WhatsApp</span>: <a href="https://wa.me/917825078508" target="_blank">+91 7825078508</a></li>
+                        <li><span class="success">LinkedIn</span>: <a href="https://www.linkedin.com/in/ragunath-r-a2a580247/" target="_blank">linkedin.com/in/ragunath-r</a></li>
+                        <li><span class="success">GitHub</span>: <a href="https://github.com/Ragu-123" target="_blank">github.com/Ragu-123</a></li>
+                        <li><span class="success">HuggingFace</span>: <a href="https://huggingface.co/ragunath-ravi" target="_blank">huggingface.co/ragunath-ravi</a></li>
+                        <li><span class="success">Resume</span>: <a href="https://drive.google.com/file/d/1kM5NYSvwx1H__plrrWiPP9M2tsTT2IlU/view?usp=sharing" target="_blank">View/Download Resume</a></li>
+                    </ul>
+                `;
+                this.printOutput(html);
+            }
+            
+            // --- NEW FUNCTION ---
+            runLegacy() {
+                this.printOutput("Loading legacy graphical UI in a new tab...");
+                this.printOutput("Executing: <span class='success'>window.open('portfolio.html', '_blank')</span>");
+                window.open('portfolio.html', '_blank');
+            }
+            
+            runHelp(header = true) {
+                let html = ``;
+                if (header) {
+                    html += `<h3>Help Menu</h3>`;
+                }
+                html += `
+                    <p>Type one of the following commands (or their 'python' equivalents):</p>
+                    <ul>
+                        <li><span class="success">home</span> - Displays my bio and experience.</li>
+                        <li><span class="success">projects</span> - Lists my featured AI/ML projects.</li>
+                        <li><span class="success">skills</span> - Shows my technical skills and proficiency.</li>
+                        <li><span class="success">contact</span> - Provides links to get in touch.</li>
+                        <li><span class="success">logbook</span> - Opens my project activity log.</li>
+                        <li><span class="success">gui</span> - Opens the legacy (old style) portfolio in a new tab.</li>
+                        <li><span class="success">ls</span> - Lists all available scripts.</li>
+                        <li><span class="success">whoami</span> - Displays my user info.</li>
+                        <li><span class="success">clear</span> - Clears the terminal screen.</li>
+                    </ul>
+                `;
+                this.printOutput(html);
+            }
+            
+            runClear() {
+                this.output.innerHTML = "";
+            }
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            new TerminalApp();
+        });
+
+    </script>
+</body>
+</html>
