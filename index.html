@@ -164,6 +164,20 @@
             width: 200px; /* Aligns the bars */
             color: var(--neutral);
         }
+
+        /* NEW: ASCII Art Style */
+        .ascii {
+            color: var(--primary);
+            font-size: 0.8em;
+            line-height: 1.1;
+        }
+        
+        /* NEW: Spinner Style */
+        .spinner {
+            color: var(--primary);
+            padding-left: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -185,6 +199,10 @@
                 this.input = document.getElementById('command-input');
                 this.prompt = document.getElementById('prompt');
                 this.cursor = document.getElementById('cursor');
+
+                // --- Command History ---
+                this.commandHistory = [];
+                this.historyIndex = 0;
 
                 this.projectsData = [
                     {
@@ -263,7 +281,8 @@
             }
 
             init() {
-                this.input.addEventListener('keydown', (e) => this.onEnter(e));
+                // Use a unified keydown handler
+                this.input.addEventListener('keydown', (e) => this.onKeydown(e));
                 this.terminal.addEventListener('click', () => this.input.focus());
                 this.boot();
             }
@@ -272,9 +291,12 @@
                 this.toggleInput(false);
                 const bootSequence = [
                     "Initializing kernel...",
-                    "Loading user profile: ragu-123",
+                    "Loading user profile: ragunath",
+                    "Mounting virtual filesystem...",
+                    "Connecting to network... [OK]",
                     "Starting terminal session...",
                     " ",
+                    "Welcome to Ragunath R's Portfolio.",
                 ];
 
                 for (const line of bootSequence) {
@@ -298,18 +320,71 @@
                 return new Promise(resolve => setTimeout(resolve, ms));
             }
 
-            onEnter(e) {
-                if (e.key === 'Enter') {
-                    const command = this.input.value;
-                    
-                    this.printCommand(command);
-                    this.handleCommand(command);
-                    
-                    this.input.value = "";
-                    this.scrollToBottom();
+            // --- Unified Keydown Handler ---
+            onKeydown(e) {
+                switch (e.key) {
+                    case 'Enter':
+                        this.handleEnter();
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        this.handleHistoryUp();
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        this.handleHistoryDown();
+                        break;
+                }
+            }
+            
+            // --- Handle Enter Key ---
+            async handleEnter() {
+                const command = this.input.value;
+                
+                this.printCommand(command);
+                
+                // Add to history if it's not empty
+                if (command.trim() !== "") {
+                    this.commandHistory.push(command);
+                }
+                // Reset history index to point to the "new" blank command
+                this.historyIndex = this.commandHistory.length;
+                
+                await this.handleCommand(command);
+                
+                this.input.value = "";
+                this.scrollToBottom();
+            }
+
+            // --- Handle Up Arrow ---
+            handleHistoryUp() {
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.input.value = this.commandHistory[this.historyIndex];
+                    this.moveCursorToEnd();
                 }
             }
 
+            // --- Handle Down Arrow ---
+            handleHistoryDown() {
+                if (this.historyIndex < this.commandHistory.length - 1) {
+                    this.historyIndex++;
+                    this.input.value = this.commandHistory[this.historyIndex];
+                    this.moveCursorToEnd();
+                } else if (this.historyIndex === this.commandHistory.length - 1) {
+                    // We are at the last command, so move to the "new" blank one
+                    this.historyIndex++;
+                    this.input.value = "";
+                }
+            }
+            
+            // --- Helper to move cursor to end of input ---
+            moveCursorToEnd() {
+                setTimeout(() => {
+                    this.input.selectionStart = this.input.selectionEnd = this.input.value.length;
+                }, 0);
+            }
+            
             printCommand(command) {
                 this.output.innerHTML += `
                     <p>
@@ -327,37 +402,58 @@
                 this.terminal.scrollTop = this.terminal.scrollHeight;
             }
 
-            handleCommand(command) {
+            // --- NEW: Spinner Animation ---
+            async showSpinner(duration = 500) {
+                const spinnerEl = document.createElement('span');
+                spinnerEl.className = 'spinner';
+                this.output.appendChild(spinnerEl);
+                
+                const frames = ['|', '/', '-', '\\'];
+                let i = 0;
+                const interval = setInterval(() => {
+                    spinnerEl.textContent = frames[i % frames.length];
+                    i++;
+                }, 100);
+                
+                await this.sleep(duration);
+                
+                clearInterval(interval);
+                spinnerEl.remove();
+            }
+
+            async handleCommand(command) {
                 const cmd = command.toLowerCase().trim();
                 
                 switch (cmd) {
                     case 'python home.py':
                     case 'home':
+                        await this.showSpinner(200);
                         this.runHome();
                         break;
                     
                     case 'python projects.py':
                     case 'projects':
+                        await this.showSpinner(500); // Slower for "big" command
                         this.runProjects();
                         break;
                     
                     case 'python skills.py':
                     case 'skills':
+                        await this.showSpinner(800); // Slower for "big" command
                         this.runSkills();
                         break;
                         
                     case 'python contact.py':
                     case 'contact':
+                        await this.showSpinner(200);
                         this.runContact();
                         break;
                     
-                    // --- NEW COMMANDS ---
                     case 'python portfolio.py':
                     case 'gui':
                     case 'legacy':
                         this.runLegacy();
                         break;
-                    // --- END NEW COMMANDS ---
 
                     case 'sh logbook.sh':
                     case 'logbook':
@@ -374,7 +470,8 @@
                         break;
                     
                     case 'whoami':
-                        this.printOutput("ragu-123: Ragunath R, Aspiring AI Engineer");
+                        await this.showSpinner(300);
+                        this.runWhoami(); // Changed to new function
                         break;
 
                     case 'ls':
@@ -470,18 +567,83 @@
                         <li><span class="success">WhatsApp</span>: <a href="https://wa.me/917825078508" target="_blank">+91 7825078508</a></li>
                         <li><span class="success">LinkedIn</span>: <a href="https://www.linkedin.com/in/ragunath-r-a2a580247/" target="_blank">linkedin.com/in/ragunath-r</a></li>
                         <li><span class="success">GitHub</span>: <a href="https://github.com/Ragu-123" target="_blank">github.com/Ragu-123</a></li>
-                        <li><span class="success">HuggingFace</span>: <a href="https://huggingface.co/ragunath-ravi" target="_blank">huggingface.co/ragunath-ravi</a></li>
-                        <li><span class="success">Resume</span>: <a href="https://drive.google.com/file/d/1kM5NYSvwx1H__plrrWiPP9M2tsTT2IlU/view?usp=sharing" target="_blank">View/Download Resume</a></li>
+                        <li><span class.success">HuggingFace</span>: <a href="https://huggingface.co/ragunath-ravi" target="_blank">huggingface.co/ragunath-ravi</a></li>
+                        <li><span class.success">Resume</span>: <a href="https://drive.google.com/file/d/1kM5NYSvwx1H__plrrWiPP9M2tsTT2IlU/view?usp=sharing" target="_blank">View/Download Resume</a></li>
                     </ul>
                 `;
                 this.printOutput(html);
             }
             
-            // --- NEW FUNCTION ---
             runLegacy() {
                 this.printOutput("Loading legacy graphical UI in a new tab...");
                 this.printOutput("Executing: <span class='success'>window.open('portfolio.html', '_blank')</span>");
                 window.open('portfolio.html', '_blank');
+            }
+
+            // --- NEW: whoami Function ---
+            runWhoami() {
+                const asciiArt = `
+<pre class="ascii">
+    -------:-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::--------------------------------
+----:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-----------------------------
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-----------------------------
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-------------------------
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-------------------------
+::::::::::::::::::::::::::::::::::::::::::::--::::--::::::::::::::::::::::::::----------------------
+::::::::::::::::::::::::::::::::::::::::-=+#%%#%%%%%%#=-:::::::::::::::::::::-----------------------
+:::::::::::::::::::::::::::::::::::::=###%@%%%%%@@@@@@@%+-::::::::::::::::::::::::------------------
+::::::::::::::::::::::::::::::::::::+%%%##%%%%%%%%%@@@@@@*++==-:::::::::::::::::::------------------
+:::::::::::::::::::::::::::::::::-*%@@@%###%@@@@@@@@@@@@@@@@%#*=:::::::::::::::::-:-----------------
+:::::::::::::::::::::::::::::::::*@@%%#%@@@@@@@@@@@@@@@@@@@@@@@@*:::::::::::::::::------------------
+::::::::::::::::::::::::::::::::*@%%#%@@@%#****##%%%%@@@@@@@@@@@@+:::::::::::::::::-----------------
+::::::::::::::::::::::::::::::::%@@%%%%#+=====+***###%%@@@@@@@@@@*::::::::::::::::::::--------------
+::::::::::::::::::::::::::::::::%@@@@#+=-----=++***###%%@@@@@@@@@#:::::::::::::::::::---------------
+::::::::::::::::::::::::::::::::+@@@#+=------=++***###%%@@@@@@@@@#::::::::::::::::::::--------------
+:::::::::::::::::::::::::::::::::=##+=-:::::--=++**###%@@@@@@@@@@=::::::::::::::::::::::------------
+::::::::::::::::::::::::::::::::::=#**+=--==*#####%%###%@@@@@@@@%::::::::::::::::::::::::-----------
+:::::::::::::::::::::::::::::::::::=++*#+=+*#*++########%@@@@@@@*::::::::::::::::::::::::-----------
+:::::::::::::::::::::::::::::::::::=*+**==+**+=+*###**##%@@@%%%@=::::::::::::::::::::::::-----------
+:::::::::::::::::::::::::::::::::::----=-=+**+=====+**##%@%@%#%@-:::::::::::::::::::::::::----------
+:::::::::::::::::::::::::::::::::::------=++*+---=++*##%%@%%%#%#::::::::::::::::::::::::::----------
+:::::::::::::::::::::::::::::::::::=--=*+##*##+==+**##%%@@%%#%@+::::::::::::::::::::::::::----------
+:::::::::::::::::::::::::::::::::::=++#%###%%#*****##%%@@%%#%@@=::::::::::::::::::::::::::----------
+:::::::::::::::::::::::::::::::::::++##*+++*##%%####%%@@@%%@@@+:::::::::::::::::::::::::::----------
+::::::::::::::::::::::::::::::::::::**=+===*****##%%%@@@@%%@@+:::::::::::::::::::::::::::::---------
+::::::::::::::::::::::::::::::::::::-##+#%%#**#%%%%@@@@@%%%%=::::::::::::::::::::::::::::::---------
+:::::::::::::::::::::::::::::::::::::=##*##**#%@@@@@@@@@%%%%#**+*+::::::::::::::::::::::::----------
+::::::::::::::::::::::::::::::::::::::+%%%%%%@@@@@@@@@%%%%%%####%%+:::::::::::::::::::::::----------
+::::::::::::::::::::::::::::::::::::::::=+%%@@@@@@@%%##%%########%%*:::::::::::::::::::::::---------
+:::::::::::::::::::::::::::::::::::::::::::+*#######***##############*=:::::::::::::::::::----------
+::::::::::::::::::::::::::::::::::::::::::-++***+**++*******#######%%%%%#+-:::::::::::::::----------
+::::::::::::::::::::::::::::::::::::::::-*##++++++=+******#######%%%%%%%%%%*-:::::::::::::----------
+::::::::::::::::::::::::::::::::::::::-*###+=-=-:=****##%%##****#***##%%%%%%%#-:::::::::::----------
+:::::::::::::::::::::::::::::::::::::=**#*-:::::=**#%@@%#******#########%%%%%%-::::::::::-----------
+::::::::::::::::::::::::::::::::::::=#***-:::::**#%#%%#********##########%%%%*:::::::::::-----------
+:::::::::::::::::::::::::::::::::::=***#-::::+*%@@###**********############%%*::::::::::::----------
+::::::::::::::::::::::::::::::::::+#***::::=#@@%#*#**********#########%%%%%%%%*::::::::::-----------
+:::::::::::::::::::::::::::::::::+#***-::=%@@%***%#********#**#########%%%%%%%%+:::::::-------------
+::::::::::::::::::::::::::::::::=##*#=::#@@@****%****##**#**###########%%%%%%%%+:::::---------------
+::::::::::::::::::::::::::::::::*###+:+@@@#****##***#%*##*####*########%%%%%%%*:::::::--------------
+:::::::::::::::::::::::::::::::=**#*:=%%%#****##***#%###*####***######%%%%%%%%%=::::::--------------
+:::::::::::::::::::::::::::::::**##:-###******%****%%##*####****######%%%%%%%%%#-::::---------------
+:::::::::::::::::::::::::::::::*##+:+#****++*%****#@#%#####**#***#####%%%%%%%%@#-::-----------------
+::::::::::::::::::::::::::::::-###=-#****+++##****%@%#########***#####%%%%%%%%@%=:------------------
+::::::::::::::::::::::::::::::+##*-*****++=+###**#%@########****###%##%%%%%%%%@#--------------------
+:::::::::::::::::::::::::::::-*%#+-#********%##**#%@#*#####*****#####%%%%%%%%%@*--------------------
+:::::::::::::::::::::::::::::=*%%==*******##%#####%@######*****######%%%%%%%%%%---------------------
+:::::::::::::::::::::::::::::+*%%-*******###%#####%@########***######%%%%%%%%%*---------------------
+:::::::::::::::::::::::::::::+#%+=******####@%####%@########**#######%%%%%%%%#---------------------=
+::::::::::::::::::::::::::::-*#@+******#####@%####%%#######**########%%%%%%%%*---------------------=
+::::::::::::::::::::::::::::=*#%#****#######@%###%%%##%%##***########%%%%%%%%*--------------------==
+::::::::::::::::::::::::::::=*#%############@%###%%%%#%%#***########%%%%%%%%%*----------------:--===
+::::::::::::::::::::::::::::+*##############@%%###%%%%%#***#########%%%%%%%%%+----------------:--===
+::::::::::::::::::::::::::::+*##############%%%##%%%@%%#**###%%#####%%%%%%%%@+-----------------=====
+::::::::::::::::::::::::::::+*#############%%%%%%%%%@%##*###%%######%%%@%%%%%=---------------=======
+</pre>
+                `;
+                this.printOutput(asciiArt);
+                this.printOutput("<b>Full Name:</b> Ragunath R");
+                this.printOutput("<b>Title:</b> AI Developer Intern @ ATG/Banao Technologies");
             }
             
             runHelp(header = true) {
